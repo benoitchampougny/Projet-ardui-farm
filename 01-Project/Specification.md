@@ -28,13 +28,13 @@ Interconnection possible:
 
 
 ### Catalogue d'élements techniques
-Chacune de ces catégories d'elements techniques fera réference à un catalogue de modeles disponible.
+Chacune de ces catégories d'élements techniques fera réference à un catalogue de modeles disponible.
 
-Ces catalogue seront partagés et enrichies par la communautée à travers un site Web dédié.
+Ces catalogues seront partagés et enrichies par la communautée à travers un site Web dédié.
 
-Cela permettra par exemple de disposer d'un grand nombre de capteurs ou de modèle d'arduino prédefinit.
+Cela permettra par exemple de disposer d'un grand nombre de capteurs ou de modèles d'arduino prédefinis.
 
-Le site permettant de gérer ces catalogues fera office d'un autre projet, celui-ci se focalise sur le logiciel embarqué dans le raspberry maitre.
+Le site permettant de gérer ces catalogues fera office d'un autre projet, celui-ci se focalise sur le logiciel embarqué dans le raspberry.
 
 
 
