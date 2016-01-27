@@ -1,0 +1,461 @@
+Configuration
+
+Arduino :
+-ID
+-Adresse I2C
+-ID ouvrage technique
+-Type de communication (sans fil ou pas)
+-Nom de la carte
+-Emplacement
+
+Actionneurs :
+-ID
+-Nom de l’actionneur
+-ID ouvrage technique (led, relais … )
+-ID ouvrage technique actionné (chauffage, pompe … )***
+-ID du temps réel actionneurs
+-ID de la carte arduino
+-ID de la fonction actionneur 
+-ID du volume **
+-ID de la surface **
+-Numéros de PIN*
+-Puissance
+
+Capteurs :
+-ID
+-Nom du capteur
+-ID ouvrage technique 
+-ID de la carte arduino
+-ID de la fonction capteur
+-ID du volume **
+-ID de la surface **
+-ID temps réel mesure*
+-Délais  d’attente de la mesure*
+-Valeurs des points de calibrage*
+-Numéros de PIN*
+
+Scenarios :
+-ID
+-Nom de la fonction
+-ID du temps réel scenarios
+-ID des capteurs*/***
+-ID des actionneurs*/***
+-ID scenario*/***
+-ID Planning*/***
+-ID des fonctionnalités (produite) (n’apparait que si elle produit)*
+-ID des volumes*
+-ID des surfaces*
+-ID des données complémentaire*/***
+-ID des seuils*/***
+-Ordre de priorité
+
+Conversions de mesures :
+-ID
+-Nom de la fonction
+-ID capteur ou des données complémentaire (entrante)
+-ID fonctions conversions 
+-Mesure modifier
+
+Structure des réseaux :
+-ID
+-ID réseau
+-ID ouvrage technique
+-ID données technique
+-ID Structure des réseaux (entrée)
+-ID Structure des réseaux (Sortie)
+-ID du ou des points de production *
+-ID du ou des points de consommation *
+
+
+Seuil :
+-ID
+-Nom du seuil
+-ID temps réel seuil
+-ID mesures
+-ID du volume***
+-ID de la surface***
+-Seuil mini
+-Seuil maxi
+
+Planning :
+-ID
+-ID du scenario
+-Plage de fonctionnement
+
+Fiche contact :
+-ID
+-Nom
+-Prénom
+-Adresse***
+-Numéro de téléphone fixe***
+-Numéro de téléphone mobile***
+-Adresse mail principal***
+-Adresse mail secondaire***
+-Niveau de droit d’accès
+-Mot de passe
+
+Téléphone à contacter en cas d’urgence:
+-ID
+-ID fiche contact 
+-Ordre de priorité
+
+Mail à contacter en cas d’urgence:
+-ID
+-ID fiche contact
+-Ordre de priorité
+
+
+
+Téléphone pour les rapports journaliers :
+-ID
+-ID fiche contact
+
+Mail pour les rapports journaliers :
+-ID
+-ID fiche contact
+
+Sketch généré :
+-ID
+-ID Arduino
+-ID sketch*
+-Version du sketch
+
+Mail d’envoie:
+-ID
+-Adresse mail
+-Mot de passe
+-Adresse SMTP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DENOMINATION
+
+Fonctionnalités :
+-ID
+-Nom (chauffe, refroidi, alerte, arrose, humidifie, ventile … )
+
+Mesures :
+-ID
+-Grandeur physique (température, humidité … )
+-Unité de mesures (°c, % ... )
+-précision 
+
+Elément :
+-ID
+-Nom (eau, air, engrais, aliment pour animaux … )
+
+Type technique :
+-ID
+-Nom (tuyaux cuivre, tuyaux PE, cuve, puit, pompe, capteur température, pompe, carte contrôleur, chauffage … )
+-ID Données techniques 
+
+Marque :
+-ID
+-Nom (Arduino, Gardena, Keyes Robot, Adafruit … )
+
+Type lié aux marques :
+-ID
+-ID Marque *
+-Nom (uno, due, dht 22, … )
+
+Type d’utilisation :
+-ID
+-nom (réseau, consommation, production, mesure, système)
+
+
+
+
+
+APPARTENANCE 
+
+Volumes :
+-ID
+-Nom du volume
+-ID du volume parent
+-ID du ou des surfaces parent *
+
+Surfaces :
+-ID
+-Nom de la surface
+-ID de la surface parent
+-ID du ou des volumes parent *
+
+Réseau :
+-ID
+-Nom du réseau
+-ID de l’élément
+-ID du ou des points de production *
+-ID du ou des points de consommation * (peut être volume, surface ou autre)
+
+Points de production :
+-ID
+-Nom du point de production
+-ID ouvrage technique
+-ID du ou des volumes parent
+-ID du ou des surfaces parent *
+
+Points de consommation :
+-ID
+-Nom du point de production
+-ID ouvrage technique
+-ID du ou des volumes parent
+-ID du ou des surfaces parent *
+
+FONCTION SYSTÊME
+
+Actionneur :
+-ID
+-Nom de la fonction de l’actionneur
+-ID du ou des ouvrages techniques*
+-Fonctionnement (digital ou analogique)
+-Nombre de PIN
+-Partage des données (oui/non)
+-Descriptif
+
+
+Capteur :
+-ID
+-Nom de la fonction du capteur
+-ID de mesure *
+-ID type technique
+-Fonctionnement (digital ou analogique)
+-Nombre de mesure
+-Nombre de PIN
+-Plage de fonctionnement minimum*
+-Plage de fonctionnement maximum*
+-ID du calibrage
+-Partage des données (oui/non)
+-Descriptif
+
+Scenarios :
+-ID
+-Nom de la fonction
+-ID du tableau*
+-ID de mesure *
+-ID des fonctionnalités (utilisé)*
+-ID des données complémentaire*
+-Nombre de planning utilisé
+-Fonctionnalité des plannings*
+-Délais  d’attente de la mesure*
+-influence (la surface, le volume ou les 2)
+-Système de régulation primaire ou secondaire (regulation simple de seuils ou influence sur d’autre scenarios)
+-ID des fonctionnalités (produite)*
+-Partage des données (oui/non)
+-Descriptif
+
+Données techniques :
+-ID
+-ID type technique
+-Données requise*
+
+Ouvrage technique :
+-ID
+-ID élément
+-ID des fonctionnalités
+-ID type technique
+-ID marque
+-ID type lié aux marques
+-ID type d’utilisation
+-ID donnée technique
+-Valeur des données technique*
+
+Complémentaire :
+-ID
+-Nom de la fonction
+-En service (Oui/Non)
+-En fonction (Oui/Non)
+-Nombre de mesure
+-ID de mesure *
+-Nombre de donnée texte
+-Lien internet*
+-Mesure*
+-Texte*
+-Fréquence d’actualisation
+-Partage des données (oui/non)
+-Descriptif
+
+Calibrage
+-ID
+-Nom de la fonction du capteur
+-ID de la fonction du capteur
+-Option de calibrage (oui/non)
+-Calibrage obligatoire (oui/non)
+-Nombre de point de calibrage
+-Point de calibrage libre (oui/non)
+-Valeur des points de calibrage défini*
+-Descriptif
+
+Conversions :
+-ID
+-Nom de la fonction
+-ID de mesure (entrante)
+-ID de mesure (sortante)
+-Partage des données (oui/non)
+
+
+Gestion des ID :
+-ID du tableau
+-Nom du tableau
+-Préfixe du tableau (4 numéros) 
+ 
+Fichier :
+-ID
+-Nom 
+-Extension 
+-Chemin
+
+Sketch :
+-ID
+-ID du fichier
+-ID capteur***
+-ID actionneur***
+
+
+
+
+
+
+
+
+
+
+
+
+
+HISTORIQUE
+
+Mesure :
+-Date et heure
+-ID temps réel Mesure
+-Mesure 1
+-Mesure 2
+-Mesure 3
+-Mesure 4
+-Mesure 5
+-Etc…
+
+Capteur :
+-Date et heure
+-ID temps réel capteur
+-En service (Oui/Non)
+-En fonction (Oui/Non)
+-En maintenance (Oui/Non)
+-En calibrage (Oui/Non)
+-Etc …
+
+Actionneur :
+-Date et heure
+-ID temps réel actionneur
+-En service (Oui/Non)
+-En fonction (Oui/Non)
+-En maintenance (Oui/Non)
+-Etc …
+
+Scenarios :
+-Date et heure
+-ID temps réel scenario
+-En service (Oui/Non)
+-En fonction (Oui/Non)
+-Etc …
+
+Données complémentaires:
+-Date et heure
+-ID temps réel données complémentaires
+-donnée 1
+-donnée 2
+-donnée 3
+-donnée 4
+-Etc …
+
+Seuil :
+-Date et heure
+-ID temps réel seuil
+-Seuil mini dépassé (Oui/Non)
+-Seuil maxi dépassé (Oui/Non)
+-Etc …
+
+Système :
+-Date et heure
+-ID temps réel alerte système
+-ID libellé
+
+
+
+
+
+
+
+
+
+
+TEMPS REEL 
+Mesure :
+-ID
+-Mesure 1
+-Mesure 2
+-Mesure 3
+-Mesure 4
+-Mesure 5
+-Etc…
+
+Capteur :
+-ID
+-En service (Oui/Non)
+-En fonction (Oui/Non)
+-En maintenance (Oui/Non)
+-En calibrage (Oui/Non)
+-Etc …
+
+Actionneur :
+-ID
+-En service (Oui/Non)
+-En fonction (Oui/Non)
+-En maintenance (Oui/Non)
+-Etc …
+
+Scenario :
+-ID
+-En service (Oui/Non)
+-En fonction (Oui/Non)
+-Etc …
+
+Données complémentaires :
+-ID
+-donnée 1
+-donnée 2
+-donnée 3
+-donnée 4
+-Etc …
+
+Seuil :
+-ID
+-Seuil mini dépassé (Oui/Non)
+-Seuil maxi dépassé (Oui/Non)
+-Etc …
+
+Système :
+-ID
+-libellé
+-état (deb/fin)
+
+
+
+
+
+
+
