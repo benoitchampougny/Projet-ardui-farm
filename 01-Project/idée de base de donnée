@@ -5,13 +5,15 @@ Arduino : models.Network.Arduino
 -Adresse I2C
 -ID du Raspberry pi auquel il est connecté en I2C
 -ID ouvrage technique
--Type de communication (sans fil ou pas)
+-Liste des PIN I/O utilisé
 -Nom de la carte
 
 Raspberry pi :
 -ID
 -Adresse I2C
 -ID ouvrage technique
+-Liste des PIN I/O utilisé
+-Liste des PIN Analogic utilisé
 -Nom de la carte
 
 Actionneurs : models.Network.Actuator
