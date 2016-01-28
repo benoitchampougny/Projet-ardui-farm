@@ -1,6 +1,6 @@
 Configuration
 
-Arduino :
+Arduino : models.Network.Arduino
 -ID
 -Adresse I2C
 -ID ouvrage technique
@@ -8,7 +8,7 @@ Arduino :
 -Nom de la carte
 -Emplacement
 
-Actionneurs :
+Actionneurs : models.Network.Actuator
 -ID
 -Nom de l’actionneur
 -ID ouvrage technique (led, relais … )
@@ -21,7 +21,7 @@ Actionneurs :
 -Numéros de PIN*
 -Puissance
 
-Capteurs :
+Capteurs : models.Network.Sensor
 -ID
 -Nom du capteur
 -ID ouvrage technique 
