@@ -27,7 +27,7 @@ class ArduinoModel(models.Model):
 class Arduino(models.Model):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('ArduinoModel', null=True, default=None, blank=True)
-    i2cPorts = models.ManyToManyField("I2cPort")
+    i2cPorts = models.ManyToManyField("I2cPort", null=True, default=None, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -43,8 +43,8 @@ class RaspberryModel(models.Model):
 class Raspberry(models.Model):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('RaspberryModel', null=True, default=None, blank=True)
-    i2cPorts = models.ManyToManyField("I2cPort")
-    wifiPorts = models.ManyToManyField("WifiPort")
+    i2cPorts = models.ManyToManyField("I2cPort", null=True, default=None, blank=True)
+    wifiPorts = models.ManyToManyField("WifiPort", null=True, default=None, blank=True)
 
     def __unicode__(self):
         return self.name
