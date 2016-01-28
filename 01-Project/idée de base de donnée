@@ -126,24 +126,43 @@ Mail d’envoie:
 -Mot de passe
 -Adresse SMTP
 
+DESCRIPTION DE L'ENVIRONNEMENT 
 
+Volumes :
+-ID
+-Nom du volume
+-ID du volume parent
+-ID du ou des surfaces parent *
 
+Surfaces :
+-ID
+-Nom de la surface
+-ID de la surface parent
+-ID du ou des volumes parent *
 
+section de Réseau :
+-ID
+-Nom du réseau
+-ID des sections réseau connecté à celui ci
+-ID de l’élément (eau,air...)
+-ID du ou des points de production *
+-ID du ou des points de consommation * (peut être volume, surface ou autre)
 
+Points de production :
+-ID
+-Nom du point de production
+-ID ouvrage technique
+-ID du ou des volumes parent
+-ID du ou des surfaces parent *
 
+Points de consommation :
+-ID
+-Nom du point de production
+-ID ouvrage technique
+-ID du ou des volumes parent
+-ID du ou des surfaces parent *
 
-
-
-
-
-
-
-
-
-
-
-
-DENOMINATION
+LIBRAIRIE COMMUNAUTAIRE APPELLATION :
 
 Fonctionnalités :
 -ID
@@ -162,168 +181,77 @@ Elément :
 Type technique :
 -ID
 -Nom (tuyaux cuivre, tuyaux PE, cuve, puit, pompe, capteur température, pompe, carte contrôleur, chauffage … )
--ID Données techniques 
 
 Marque :
 -ID
 -Nom (Arduino, Gardena, Keyes Robot, Adafruit … )
 
-Type lié aux marques :
+Modéle :
 -ID
 -ID Marque *
 -Nom (uno, due, dht 22, … )
 
-Type d’utilisation :
--ID
--nom (réseau, consommation, production, mesure, système)
-
-
-
-
-
-APPARTENANCE 
-
-Volumes :
--ID
--Nom du volume
--ID du volume parent
--ID du ou des surfaces parent *
-
-Surfaces :
--ID
--Nom de la surface
--ID de la surface parent
--ID du ou des volumes parent *
-
-Réseau :
--ID
--Nom du réseau
--ID de l’élément
--ID du ou des points de production *
--ID du ou des points de consommation * (peut être volume, surface ou autre)
-
-Points de production :
--ID
--Nom du point de production
--ID ouvrage technique
--ID du ou des volumes parent
--ID du ou des surfaces parent *
-
-Points de consommation :
--ID
--Nom du point de production
--ID ouvrage technique
--ID du ou des volumes parent
--ID du ou des surfaces parent *
-
-FONCTION SYSTÊME
+LIBRAIRIE COMMUNAUTAIRE DRIVER:
 
 Actionneur :
 -ID
--Nom de la fonction de l’actionneur
--ID du ou des ouvrages techniques*
+-ID appellation Fonctionnalités
+-ID appelation type techniques*
 -Fonctionnement (digital ou analogique)
 -Nombre de PIN
 -Partage des données (oui/non)
 -Descriptif
 
-
 Capteur :
 -ID
 -Nom de la fonction du capteur
--ID de mesure *
--ID type technique
+-GPIO / arduino
+-ID appelation de mesure *
+-ID appelation type technique
 -Fonctionnement (digital ou analogique)
--Nombre de mesure
+-Nombre de mesures
+-Nom des variables des mesures
 -Nombre de PIN
 -Plage de fonctionnement minimum*
 -Plage de fonctionnement maximum*
 -ID du calibrage
 -Partage des données (oui/non)
 -Descriptif
+-code python (gpio)
+-sketch void setup(arduino)
+-sketch void loop(arduino)
 
 Scenarios :
 -ID
 -Nom de la fonction
--ID du tableau*
 -ID de mesure *
 -ID des fonctionnalités (utilisé)*
+-ID des Scenarios (utilisé)*
 -ID des données complémentaire*
 -Nombre de planning utilisé
 -Fonctionnalité des plannings*
 -Délais  d’attente de la mesure*
 -influence (la surface, le volume ou les 2)
 -Système de régulation primaire ou secondaire (regulation simple de seuils ou influence sur d’autre scenarios)
--ID des fonctionnalités (produite)*
+-ID appelation fonctionnalités (produite)
 -Partage des données (oui/non)
 -Descriptif
+-code python
 
-Données techniques :
+Variables extérieur :
 -ID
--ID type technique
--Données requise*
-
-Ouvrage technique :
--ID
--ID élément
--ID des fonctionnalités
--ID type technique
--ID marque
--ID type lié aux marques
--ID type d’utilisation
--ID donnée technique
--Valeur des données technique*
-
-Complémentaire :
--ID
--Nom de la fonction
--En service (Oui/Non)
--En fonction (Oui/Non)
--Nombre de mesure
--ID de mesure *
--Nombre de donnée texte
--Lien internet*
--Mesure*
--Texte*
--Fréquence d’actualisation
+-Nombre de variable
+-Importation internet (OUI/NON)
+-ID Appellation mesure
+-nom des variable
 -Partage des données (oui/non)
 -Descriptif
-
-Calibrage
--ID
--Nom de la fonction du capteur
--ID de la fonction du capteur
--Option de calibrage (oui/non)
--Calibrage obligatoire (oui/non)
--Nombre de point de calibrage
--Point de calibrage libre (oui/non)
--Valeur des points de calibrage défini*
--Descriptif
-
-Conversions :
--ID
--Nom de la fonction
--ID de mesure (entrante)
--ID de mesure (sortante)
--Partage des données (oui/non)
+-code python
 
 
-Gestion des ID :
--ID du tableau
--Nom du tableau
--Préfixe du tableau (4 numéros) 
- 
-Fichier :
--ID
--Nom 
--Extension 
--Chemin
 
-Sketch :
--ID
--ID du fichier
--ID capteur***
--ID actionneur***
+
+
 
 
 
