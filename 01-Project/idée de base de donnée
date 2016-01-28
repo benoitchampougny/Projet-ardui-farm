@@ -23,9 +23,10 @@ Actionneurs : models.Network.Actuator
 -ID appellation Fonctionnalités
 -ID du temps réel actionneurs
 -ID de la carte arduino ou du raspberry pi auquel il est connecté
--ID du volume **
--ID de la surface **
--ID du reseau **
+-ID du volume
+-ID de la surface
+-ID du reseau
+-ID du point de production
 -Numéros de PIN*
 -Puissance
 
@@ -35,24 +36,25 @@ Capteurs : models.Network.Sensor
 -ID driver capteur
 -ID de la carte arduino ou du raspberry pi auquel il est connecté
 -ID de la fonction capteur
--ID temps réel mesure*
--ID du volume **
--ID de la surface **
--ID du reseau **
--Délais  d’attente de la mesure*
--Numéros de PIN*
+-ID temps réel mesure
+-ID du volume 
+-ID de la surface 
+-ID du reseau 
+-ID du point de production
+-Délais d’attente de la mesure
+-Numéros de PIN
 
 Scenarios :
 -ID
 -Nom de la fonction
 -ID driver scenario
 -ID du temps réel scenarios
--ID des capteurs*/***
+-ID des capteurs
 -ID des actionneurs
 -ID seuil
 -ID Planning
--ID des volumes*
--ID des surfaces*
+-ID des volumes
+-ID des surfaces
 -ID du reseau
 -Ordre de priorité
 
@@ -68,87 +70,42 @@ Planning :
 -ID
 -Plage de fonctionnement
 
-DONNEES ANNEXES :
-
-Fiche contact :
--ID
--Nom
--Prénom
--Adresse***
--Numéro de téléphone fixe***
--Numéro de téléphone mobile***
--Adresse mail principal***
--Adresse mail secondaire***
--Niveau de droit d’accès
--Mot de passe
-
-Téléphone à contacter en cas d’urgence:
--ID
--ID fiche contact 
--Ordre de priorité
-
-Mail à contacter en cas d’urgence:
--ID
--ID fiche contact
--Ordre de priorité
-
-
-
-Téléphone pour les rapports journaliers :
--ID
--ID fiche contact
-
-Mail pour les rapports journaliers :
--ID
--ID fiche contact
-
-Sketch généré :
--ID
--ID Arduino
--ID sketch*
--Version du sketch
-
-Mail d’envoie:
--ID
--Adresse mail
--Mot de passe
--Adresse SMTP
-
 DESCRIPTION DE L'ENVIRONNEMENT 
 
 Volumes :
 -ID
 -Nom du volume
 -ID du volume parent
--ID du ou des surfaces parent *
+-ID du ou des surfaces presente dans le volume
 
 Surfaces :
 -ID
 -Nom de la surface
 -ID de la surface parent
--ID du ou des volumes parent *
+-ID du ou des volumes presente sur la surface
+
+reseau :
+-ID
+-Nom du réseau
+-ID de l’élément (eau,air...)
+
+point de production (est equivalent à un volume):
+-ID
+-Nom du point de production 
+-ID du volume parent
+
+Point de consommation :
+-ID
+-Nom du point de consomation
+-ID du volumes
+-ID de la surfaces
 
 section de Réseau :
 -ID
--Nom du réseau
+-ID du réseau
 -ID des sections réseau connecté à celui ci
--ID de l’élément (eau,air...)
--ID du ou des points de production *
--ID du ou des points de consommation * (peut être volume, surface ou autre)
-
-Points de production :
--ID
--Nom du point de production
--ID ouvrage technique
--ID du ou des volumes parent
--ID du ou des surfaces parent *
-
-Points de consommation :
--ID
--Nom du point de production
--ID ouvrage technique
--ID du ou des volumes parent
--ID du ou des surfaces parent *
+-ID du ou des points de production 
+-ID du ou des points de consommation (peut être volume, surface ou autre)
 
 LIBRAIRIE COMMUNAUTAIRE APPELLATION :
 
@@ -176,7 +133,7 @@ Marque :
 
 Modéle :
 -ID
--ID Marque *
+-ID Marque 
 -Nom (uno, due, dht 22, … )
 
 LIBRAIRIE COMMUNAUTAIRE DRIVER:
@@ -193,7 +150,7 @@ Controleur :
 Actionneur :
 -ID
 -ID appellation Fonctionnalités
--ID appelation type techniques*
+-ID appelation type techniques
 -Fonctionnement (digital ou analogique)
 -Nombre de PIN
 -Partage des données (oui/non)
@@ -203,14 +160,14 @@ Capteur :
 -ID
 -Nom de la fonction du capteur
 -GPIO / arduino
--ID appelation de mesure *
+-ID appelation de mesure 
 -ID appelation type technique
 -Fonctionnement (digital ou analogique)
 -Nombre de mesures
 -Nom des variables des mesures
 -Nombre de PIN
--Plage de fonctionnement minimum*
--Plage de fonctionnement maximum*
+-Plage de fonctionnement minimum
+-Plage de fonctionnement maximum
 -ID du calibrage
 -Partage des données (oui/non)
 -Descriptif
@@ -232,8 +189,8 @@ Scenario :
 -ID
 -Nom de la fonction
 -Nombre d'argument
--ID appellation de mesure (capteur)*
--ID des fonctionnalités (actionneur) (chauffe, ventile...)*
+-ID appellation de mesure (capteur)
+-ID des fonctionnalités (actionneur) (chauffe, ventile...)
 -ID Variables extérieur
 -ID appellation de mesure (seuil)
 -Nombre de planning utilisé
@@ -250,7 +207,7 @@ Scenario de supervision et gestion des priorité:
 -Nom de la fonction
 -Nombre d'argument
 -ID scenario
--ID des fonctionnalités (produite part les autres scenario)*
+-ID des fonctionnalités (produite part les autres scenario)
 -ID Variables extérieur
 -ID appellation de mesure (seuil)
 -Nombre de planning utilisé
@@ -311,14 +268,6 @@ Système :
 -ID libellé
 
 
-
-
-
-
-
-
-
-
 TEMPS REEL 
 Mesure :
 -ID
@@ -370,7 +319,51 @@ Système :
 -état (deb/fin)
 
 
+DONNEES ANNEXES :
 
+Fiche contact :
+-ID
+-Nom
+-Prénom
+-Adresse
+-Numéro de téléphone fixe
+-Numéro de téléphone mobile
+-Adresse mail principal
+-Adresse mail secondaire
+-Niveau de droit d’accès
+-Mot de passe
+
+Téléphone à contacter en cas d’urgence:
+-ID
+-ID fiche contact 
+-Ordre de priorité
+
+Mail à contacter en cas d’urgence:
+-ID
+-ID fiche contact
+-Ordre de priorité
+
+
+
+Téléphone pour les rapports journaliers :
+-ID
+-ID fiche contact
+
+Mail pour les rapports journaliers :
+-ID
+-ID fiche contact
+
+Sketch généré :
+-ID
+-ID Arduino
+-ID sketch
+-Version du sketch
+
+Mail d’envoie:
+-ID
+-Adresse mail
+-Mot de passe
+-Adresse SMTP
 
 
 
