@@ -6,4 +6,4 @@ def home(request):
     return HttpResponseRedirect(reverse('network'))
 
 def network(request):
-    return render(  request, 'content/network.html')
+    return render(  request, 'network/network.html')
