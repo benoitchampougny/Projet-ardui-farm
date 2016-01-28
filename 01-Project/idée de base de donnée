@@ -53,10 +53,23 @@ Scenarios :
 -ID des actionneurs
 -ID seuil
 -ID Planning
--ID des volumes
--ID des surfaces
+-ID du volume
+-ID de la surface
 -ID du reseau
 -Ordre de priorité
+
+Scenarios de supervision et gestion des priorités:
+-ID
+-Nom de la fonction
+-ID driver scenario de supervision et gestion des priorités
+-ID du temps réel scenarios de supervision et gestion des priorités
+-ID des scenarios
+-ID seuil
+-ID Planning
+-ID du volume
+-ID de la surface
+-ID du reseau
+
 
 Seuil :
 -ID
@@ -104,6 +117,8 @@ section de Réseau :
 -ID
 -ID du réseau
 -ID des sections réseau connecté à celui ci
+-ID de l'actionneur
+-ID du capteur
 -ID du ou des points de production 
 -ID du ou des points de consommation (peut être volume, surface ou autre)
 
@@ -202,7 +217,7 @@ Scenario :
 -Descriptif
 -code python
 
-Scenario de supervision et gestion des priorité:
+Scenario de supervision et gestion des priorités:
 -ID
 -Nom de la fonction
 -Nombre d'argument
