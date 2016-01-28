@@ -27,6 +27,7 @@ class ArduinoModel(models.Model):
 class Arduino(models.Model):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('ArduinoModel', null=True, default=None, blank=True)
+    i2cPorts = models.ManyToManyField("I2cPort")
 
     def __unicode__(self):
         return self.name
@@ -42,6 +43,8 @@ class RaspberryModel(models.Model):
 class Raspberry(models.Model):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('RaspberryModel', null=True, default=None, blank=True)
+    i2cPorts = models.ManyToManyField("I2cPort")
+    wifiPorts = models.ManyToManyField("WifiPort")
 
     def __unicode__(self):
         return self.name
@@ -62,18 +65,38 @@ class Sensor(models.Model):
     def __unicode__(self):
         return self.name
 
+class ActuatorModel(models.Model):
+    name = models.CharField("Model Name", max_length=200)
+    sketch = models.FileField(upload_to='sketches/', null=True, default=None)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Actuator(models.Model):
+    name = models.CharField("Card Name", max_length=200)
+    cardModel = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Port(models.Model):
     number = models.IntegerField(default=1)
-    interfaceType = models.ForeignKey("InterfaceType", null=True, default=None, blank=True)
 
     def __unicode__(self):
         return self.name
 
-class InterfaceType(models.Model):
-    name = models.CharField("Interface Type Name", max_length=200)
 
-    def __unicode__(self):
-        return self.name
+class I2cPort(Port):
+    address = models.CharField("I2C Address", max_length=200)
+
+
+class WifiPort(Port):
+    address = models.CharField("IP Address", max_length=200)
+    address = models.IntegerField("UDP Port")
+    password = models.CharField("Password", max_length=200)
+
 
 class Connection(models.Model):
     source = models.ForeignKey("Port", null=True, default=None, blank=True, related_name="target")
