@@ -3,84 +3,70 @@ Configuration
 Arduino : models.Network.Arduino
 -ID
 -Adresse I2C
+-ID du Raspberry pi auquel il est connecté en I2C
 -ID ouvrage technique
 -Type de communication (sans fil ou pas)
 -Nom de la carte
--Emplacement
+
+Raspberry pi :
+-ID
+-Adresse I2C
+-ID ouvrage technique
+-Nom de la carte
 
 Actionneurs : models.Network.Actuator
 -ID
 -Nom de l’actionneur
--ID ouvrage technique (led, relais … )
--ID ouvrage technique actionné (chauffage, pompe … )***
+-ID driver actionneur
+-ID appellation Fonctionnalités
 -ID du temps réel actionneurs
--ID de la carte arduino
--ID de la fonction actionneur 
+-ID de la carte arduino ou du raspberry pi auquel il est connecté
 -ID du volume **
 -ID de la surface **
+-ID du reseau **
 -Numéros de PIN*
 -Puissance
 
 Capteurs : models.Network.Sensor
 -ID
 -Nom du capteur
--ID ouvrage technique 
--ID de la carte arduino
+-ID driver capteur
+-ID de la carte arduino ou du raspberry pi auquel il est connecté
 -ID de la fonction capteur
+-ID temps réel mesure*
 -ID du volume **
 -ID de la surface **
--ID temps réel mesure*
+-ID du reseau **
 -Délais  d’attente de la mesure*
--Valeurs des points de calibrage*
 -Numéros de PIN*
 
 Scenarios :
 -ID
 -Nom de la fonction
+-ID driver scenario
 -ID du temps réel scenarios
 -ID des capteurs*/***
--ID des actionneurs*/***
--ID scenario*/***
--ID Planning*/***
--ID des fonctionnalités (produite) (n’apparait que si elle produit)*
+-ID des actionneurs
+-ID seuil
+-ID Planning
 -ID des volumes*
 -ID des surfaces*
--ID des données complémentaire*/***
--ID des seuils*/***
+-ID du reseau
 -Ordre de priorité
-
-Conversions de mesures :
--ID
--Nom de la fonction
--ID capteur ou des données complémentaire (entrante)
--ID fonctions conversions 
--Mesure modifier
-
-Structure des réseaux (arrosage):
--ID
--ID réseau
--ID ouvrage technique
--ID données technique
--ID Structure des réseaux (entrée)
--ID Structure des réseaux (Sortie)
--ID du ou des points de production *
--ID du ou des points de consommation *
-
 
 Seuil :
 -ID
 -Nom du seuil
 -ID temps réel seuil
--ID mesures
--ID du volume***
--ID de la surface***
+-ID appelation mesures
 -Seuil mini
 -Seuil maxi
 
 Planning :
 -ID
--ID du scenario
 -Plage de fonctionnement
+
+DONNEES ANNEXES :
 
 Fiche contact :
 -ID
@@ -193,6 +179,15 @@ Modéle :
 
 LIBRAIRIE COMMUNAUTAIRE DRIVER:
 
+Controleur :
+-ID
+-ID marque
+-ID modéle
+-nombre de PIN I/O
+-nombre de PIN analogique
+-numero de pin SDA (i2c)
+-numero de pin SCL (i2c)
+
 Actionneur :
 -ID
 -ID appellation Fonctionnalités
@@ -221,23 +216,6 @@ Capteur :
 -sketch void setup(arduino)
 -sketch void loop(arduino)
 
-Scenarios :
--ID
--Nom de la fonction
--ID de mesure *
--ID des fonctionnalités (utilisé)*
--ID des Scenarios (utilisé)*
--ID des données complémentaire*
--Nombre de planning utilisé
--Fonctionnalité des plannings*
--Délais  d’attente de la mesure*
--influence (la surface, le volume ou les 2)
--Système de régulation primaire ou secondaire (regulation simple de seuils ou influence sur d’autre scenarios)
--ID appelation fonctionnalités (produite)
--Partage des données (oui/non)
--Descriptif
--code python
-
 Variables extérieur :
 -ID
 -Nombre de variable
@@ -248,22 +226,39 @@ Variables extérieur :
 -Descriptif
 -code python
 
+Scenario :
+-ID
+-Nom de la fonction
+-Nombre d'argument
+-ID appellation de mesure (capteur)*
+-ID des fonctionnalités (actionneur) (chauffe, ventile...)*
+-ID Variables extérieur
+-ID appellation de mesure (seuil)
+-Nombre de planning utilisé
+-Nom des plannings
+-influence (le reseau, la surface, le volume ou les 2)
+-ID appellation element (si reseau)
+-ID appelation fonctionnalités (produite)
+-Partage des données (oui/non)
+-Descriptif
+-code python
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Scenario de supervision et gestion des priorité:
+-ID
+-Nom de la fonction
+-Nombre d'argument
+-ID scenario
+-ID des fonctionnalités (produite part les autres scenario)*
+-ID Variables extérieur
+-ID appellation de mesure (seuil)
+-Nombre de planning utilisé
+-Nom des plannings
+-influence (le reseau, la surface, ou le volume)
+-ID appellation element (si reseau)
+-ID appelation fonctionnalités (produite)
+-Partage des données (oui/non)
+-Descriptif
+-code python
 
 HISTORIQUE
 
@@ -299,15 +294,6 @@ Scenarios :
 -ID temps réel scenario
 -En service (Oui/Non)
 -En fonction (Oui/Non)
--Etc …
-
-Données complémentaires:
--Date et heure
--ID temps réel données complémentaires
--donnée 1
--donnée 2
--donnée 3
--donnée 4
 -Etc …
 
 Seuil :
