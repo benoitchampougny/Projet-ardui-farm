@@ -83,6 +83,14 @@ Planning :
 -ID
 -Plage de fonctionnement
 
+Sketch :
+-ID
+-ID arduino
+-Version
+-Nombre de bit retourné par le sketch
+-Nombre de bit attendue par le sketch
+-sketch
+
 ----------------------------------------------------------------------------------------------------------------------------------
 
 DESCRIPTION DE L'ENVIRONNEMENT 
@@ -161,8 +169,7 @@ LIBRAIRIE COMMUNAUTAIRE DRIVER:
 
 Controleur :
 -ID
--ID marque
--ID modéle
+-ID appellation modéle 
 -nombre de PIN I/O
 -nombre de PIN analogique
 -numero de pin SDA (i2c)
@@ -170,6 +177,7 @@ Controleur :
 
 Actionneur :
 -ID
+-ID appellation modéle 
 -ID appellation Fonctionnalités
 -ID appelation type techniques
 -Fonctionnement (digital ou analogique)
@@ -181,11 +189,13 @@ Capteur :
 -ID
 -Nom de la fonction du capteur
 -GPIO / arduino
+-ID appellation modéle 
 -ID appelation de mesure 
 -ID appelation type technique
 -Fonctionnement (digital ou analogique)
 -Nombre de mesures
 -Nom des variables des mesures
+-Nombre de charactere maximum par mesure
 -Nombre de PIN
 -Plage de fonctionnement minimum
 -Plage de fonctionnement maximum
@@ -228,7 +238,7 @@ Scenario de supervision et gestion des priorités:
 -Nom de la fonction
 -Nombre d'argument
 -ID scenario
--ID des fonctionnalités (produite part les autres scenario)
+-ID des fonctionnalités (produite par les autres scenario)
 -ID Variables extérieur
 -ID appellation de mesure (seuil)
 -Nombre de planning utilisé
