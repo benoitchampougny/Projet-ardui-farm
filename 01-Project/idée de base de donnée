@@ -205,6 +205,8 @@ Capteur :
 -code python (gpio)
 -sketch void setup(arduino)
 -sketch void loop(arduino)
+-sketch include (librarie arduino)
+-sketch define (definis le numero de pin arduino)
 
 Variables extérieur :
 -ID
