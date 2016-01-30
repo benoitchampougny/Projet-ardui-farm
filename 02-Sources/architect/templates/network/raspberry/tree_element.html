@@ -1,0 +1,9 @@
+<li class="">{{element.name}}
+  <ul class="">
+    {% for srcPort in element.i2cPorts.all %}
+      {% for dstPort in srcPort.connection.all %}
+        {% include "network/tree_element.html" with element=dstPort.parent %}
+      {% endfor %}
+    {% endfor %}
+  </ul>
+</li>

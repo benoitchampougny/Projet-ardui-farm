@@ -4,7 +4,7 @@
     - the interconnection between elements (interfaces)
 """
 from django.db import models
-
+from architect.models.Library import *
 
 class Network(models.Model):
     name = models.CharField("Network Name", max_length=200)
@@ -14,48 +14,28 @@ class Network(models.Model):
         return self.name
 
 
-class ArduinoModel(models.Model):
-    name = models.CharField("Model Name", max_length=200)
-    ioPins = models.IntegerField("Digital I/O Pins", default=0)
-    pwmPins = models.IntegerField("PWM Digital I/O Pins", default=0)
-    analogIn = models.IntegerField("Analog Input Pins", default=0)
-
-    def __unicode__(self):
-        return self.name
-
-
 class Arduino(models.Model):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('ArduinoModel', null=True, default=None, blank=True)
-    i2cPorts = models.ManyToManyField("I2cPort", null=True, default=None, blank=True)
+    i2cPorts = models.ManyToManyField("I2cPort", default=None, blank=True)
 
     def __unicode__(self):
         return self.name
 
-
-class RaspberryModel(models.Model):
-    name = models.CharField("Model Name", max_length=200)
-
-    def __unicode__(self):
-        return self.name
-
+    def tree_element_template(self):
+        return "network/arduino/tree_element.html"
 
 class Raspberry(models.Model):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('RaspberryModel', null=True, default=None, blank=True)
-    i2cPorts = models.ManyToManyField("I2cPort", null=True, default=None, blank=True)
-    wifiPorts = models.ManyToManyField("WifiPort", null=True, default=None, blank=True)
+    i2cPorts = models.ManyToManyField("I2cPort", default=None, blank=True)
+    wifiPorts = models.ManyToManyField("WifiPort", default=None, blank=True)
 
     def __unicode__(self):
         return self.name
 
-
-class SensorModel(models.Model):
-    name = models.CharField("Model Name", max_length=200)
-    sketch = models.FileField(upload_to='sketches/', null=True, default=None)
-
-    def __unicode__(self):
-        return self.name
+    def tree_element_template(self):
+        return "network/raspberry/tree_element.html"
 
 
 class Sensor(models.Model):
@@ -65,13 +45,8 @@ class Sensor(models.Model):
     def __unicode__(self):
         return self.name
 
-class ActuatorModel(models.Model):
-    name = models.CharField("Model Name", max_length=200)
-    sketch = models.FileField(upload_to='sketches/', null=True, default=None)
-
-    def __unicode__(self):
-        return self.name
-
+    def tree_element_template(self):
+        return "networl/sensor/tree_element"
 
 class Actuator(models.Model):
     name = models.CharField("Card Name", max_length=200)
@@ -81,23 +56,35 @@ class Actuator(models.Model):
         return self.name
 
 
-class Port(models.Model):
-    number = models.IntegerField(default=1)
+class I2cPort(models.Model):
+    number = models.IntegerField("Number", default=1)
+    address = models.CharField("I2C Address", max_length=200, default=None, blank=True)
+    connection = models.ManyToManyField("self", default=None, blank=True)
 
     def __unicode__(self):
-        return self.name
+        return self.address
+
+    @property
+    def parent(self):
+        if self.arduino_set.count() > 0:
+            return self.arduino_set.first()
+        elif self.raspberry_set.count() > 0:
+            return self.raspberry_set.first()
 
 
-class I2cPort(Port):
-    address = models.CharField("I2C Address", max_length=200)
+class WifiPort(models.Model):
+    number = models.IntegerField("Number", default=1)
+    address = models.CharField("IP Address", max_length=200, default=None, blank=True)
+    port = models.IntegerField("UDP Port", default=8000, blank=True)
+    password = models.CharField("Password", max_length=200, default=None, blank=True)
+    connection = models.ManyToManyField("self", default=None, blank=True)
 
+    def __unicode__(self):
+        return self.address
 
-class WifiPort(Port):
-    address = models.CharField("IP Address", max_length=200)
-    address = models.IntegerField("UDP Port")
-    password = models.CharField("Password", max_length=200)
-
-
-class Connection(models.Model):
-    source = models.ForeignKey("Port", null=True, default=None, blank=True, related_name="target")
-    target = models.ForeignKey("Port", null=True, default=None, blank=True, related_name="source")
+    @property
+    def parent(self):
+        if self.arduino_set.count() > 0:
+            return self.arduino_set.first()
+        elif self.raspberry_set.count() > 0:
+            return self.raspberry_set.first()
