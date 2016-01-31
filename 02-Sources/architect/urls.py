@@ -17,4 +17,8 @@ urlpatterns = [
     url(r'^network/detail_raspberry/(?P<id>\d+)$', views.detail_raspberry, name='network-raspberry-detail'),
     url(r'^network/detail_sensor/(?P<id>\d+)$', views.detail_sensor, name='network-sensor-detail'),
     url(r'^network/detail_actuator/(?P<id>\d+)$', views.detail_actuator, name='network-actuator-detail'),
+
+    # Create Component
+    url(r'^network/create_component$', views.create_component, name='network-create-component'),
+
 ]
