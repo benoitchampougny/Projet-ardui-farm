@@ -1,0 +1,43 @@
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th> Address </th>
+        <th> Direction </th>
+        <th>I2C Port Name</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for srcPort in element.i2cPorts.all %}
+        {% for dstPort in srcPort.connection.all %}
+          <tr>
+            <th scope="row">{{srcPort.number}} </th>
+            <td> {{dstPort.address}} </td>
+            <td> {{dstPort.direction}} </td>
+            <td>
+              <a class="network-refresh-detail"
+                  data-target="#component_detail"
+                  data-ajax-url="{% url "network-component-detail" dstPort.parent.component_type dstPort.parent.pk %}">
+                {{dstPort.parent.name}}
+              </a>
+            </td>
+            <td> Edit / Remove </td>
+          </tr>
+        {% empty %}
+        <tr>
+          <th scope="row">{{srcPort.number}}</th>
+          <td> <input type="text" class="form-control" placeholder="Address"> </td>
+          <td>
+            <select class="form-control">
+              <option value="DW"> Downward</option>
+              <option value="UP"> Upward</option>
+            </select>
+          </td>
+          <td> <input type="text" class="form-control" placeholder="Component Name"> </td>
+          <td> Add </td>
+        </tr>
+        {% endfor %}
+      {% endfor %}
+    </tbody>
+</table>

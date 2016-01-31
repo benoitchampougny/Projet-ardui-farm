@@ -6,4 +6,15 @@ urlpatterns = [
     # Home views
     url(r'^$', views.home, name='home'),
     url(r'^network$', views.network, name='network'),
+
+    # Generic Detail view that will route to the specific one
+    url(r'^network/detail/(?P<component_type>\w+)/(?P<component_id>\d+)$',
+        views.component_detail,
+        name='network-component-detail'),
+
+    # Specific Detail Views
+    url(r'^network/detail_arduino/(?P<id>\d+)$', views.detail_arduino, name='network-arduino-detail'),
+    url(r'^network/detail_raspberry/(?P<id>\d+)$', views.detail_raspberry, name='network-raspberry-detail'),
+    url(r'^network/detail_sensor/(?P<id>\d+)$', views.detail_sensor, name='network-sensor-detail'),
+    url(r'^network/detail_actuator/(?P<id>\d+)$', views.detail_actuator, name='network-actuator-detail'),
 ]

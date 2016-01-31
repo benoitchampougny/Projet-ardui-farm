@@ -11,3 +11,8 @@
     {% include "network/component_detail.html" %}
   </div>
 {% endblock %}
+
+{% block view-scripts %}
+{% load staticfiles %}
+<script src={% static "js/app/network.js"%}></script>
+{% endblock %}
