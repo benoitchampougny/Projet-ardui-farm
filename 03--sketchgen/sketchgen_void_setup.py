@@ -111,4 +111,3 @@ print(test)
 
 """
 
-def make_void_loop(
