@@ -34,13 +34,14 @@ def make_void_setup( number_digital_pin, number_analog_pin, list_PWM_pin, list_I
 		result_error = "error digital number"
 	if number_analog_pin_setup > number_analog_pin :
 		result_error = "error analog number"
-	for a in range (len(list_PWM_pin)) :
-		for b in range (len(list_setup_pin_PWM)) :
+	for a in range (len(list_setup_pin_PWM)) :
+		for b in range (len(list_PWM_pin)) :
 			if compatibility == False :
-				if list_PWM_pin [a] == list_setup_pin_PWM [b] :
+				if list_PWM_pin [b] == list_setup_pin_PWM [a] :
 					compatibility = True
 		if compatibility == False :
 			result_error = "error compatibility pwm"
+		compatibility = False
 	
 	if result_error == "" :
 		result = "void setup() { \n\tSerial.begin(9600);\n\tWire.begin(" + str(adress_I2C) + ");\n\tWire.onReceive(receiveEvent);\n\t"
@@ -92,16 +93,16 @@ def make_void_setup( number_digital_pin, number_analog_pin, list_PWM_pin, list_I
 		final_result = result_error
 	return final_result
 	
-"""test
+"""
 number_digital_pin = 14
 number_analog_pin = 6 	
 list_PWM_pin = [11,10,9,6,5,3]
 list_I2C_pin = ["A4","A5"]
 
-list_setup_pin_digital_INPUT= [3,7]
+list_setup_pin_digital_INPUT= [3,2]
 list_setup_pin_digital_OUTPUT= [5,13]
 list_setup_pin_analog = ["A0","A1"]
-list_setup_pin_PWM= [11,6]
+list_setup_pin_PWM= [11,10]
 
 adress_I2C= 8
 
@@ -109,5 +110,5 @@ test = make_void_setup( number_digital_pin, number_analog_pin, list_PWM_pin, lis
 
 print(test)
 
-"""
 
+"""
