@@ -1,0 +1,34 @@
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th> Address </th>
+        <th> Connected Equipment</th>
+        <th>
+          <button type="button"
+                  class="btn btn-primary btn-xs create-component"
+                  data-target="#network-modal"
+                  data-ajax-url="{%url 'network-add-i2c' element.component_type element.pk %}">
+            <span class="glyphicon glyphicon-plus">
+            </span>
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for srcPort in element.i2cPorts.all %}
+        {% for dstPort in srcPort.connection.all %}
+          <tr>
+            <td> {{dstPort.address}} </td>
+            <td>
+              <a class="network-refresh-detail"
+                  data-target="#component_detail"
+                  data-ajax-url="{% url "network-component-detail" dstPort.parent.component_type dstPort.parent.pk %}">
+                {{dstPort.parent.name}}
+              </a>
+            </td>
+            <td> <a href="#"> Remove </a> </td>
+          </tr>
+        {% endfor %}
+      {% endfor %}
+    </tbody>
+</table>

@@ -67,13 +67,12 @@ class I2cPort(models.Model):
         ("UP", "Upward"),
         ("DW", "Downward"),
     )
-    number = models.IntegerField("Number", default=1)
     direction = models.CharField(max_length=2, choices=DIRECTIONS, default="DW")
     address = models.CharField("I2C Address", max_length=200, default=None, blank=True)
     connection = models.ManyToManyField("self", blank=True)
 
     def __unicode__(self):
-        return self.address
+        return "%s-%s" % (self.parent.name, self.address)
 
     @property
     def parent(self):
@@ -88,7 +87,7 @@ class WifiPort(models.Model):
     address = models.CharField("IP Address", max_length=200, default=None, blank=True)
     port = models.IntegerField("UDP Port", default=8000, blank=True)
     password = models.CharField("Password", max_length=200, default=None, blank=True)
-    connection = models.ManyToManyField("self")
+    connection = models.ManyToManyField("self", blank=True)
 
     def __unicode__(self):
         return self.address
@@ -99,3 +98,7 @@ class WifiPort(models.Model):
             return self.arduino_set.first()
         elif self.raspberry_set.count() > 0:
             return self.raspberry_set.first()
+
+
+
+ComponentModel={"arduino": Arduino, "raspberry": Raspberry, "sensor": Sensor, "actuator": Actuator}

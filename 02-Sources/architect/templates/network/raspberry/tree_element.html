@@ -1,7 +1,7 @@
 <ul class="">
   {% for srcPort in element.downI2C %}
     {% for dstPort in srcPort.connection.all %}
-      {% include "network/tree_element.html" with element=dstPort.parent %}
+      {% include "network/component_tree/tree_element.html" with element=dstPort.parent %}
     {% endfor %}
   {% endfor %}
 </ul>

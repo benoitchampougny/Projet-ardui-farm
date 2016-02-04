@@ -1,0 +1,19 @@
+
+{% csrf_token %}
+<div class="form-group">
+  <label for="component-name">Component Name</label>
+  <input  type="text"
+          class="form-control"
+          id="component-name"
+          name="component_name"
+          placeholder="Name">
+</div>
+<div class="form-group">
+  <label for="component-type">Component Type</label>
+  <select class="form-control" id="component-type" name="component_type">
+    <option value="Arduino">Arduino</option>
+    <option value="Raspberry">Raspberry</option>
+    <option value="Sensor">Sensor</option>
+    <option value="Actuator">Actuator</option>
+  </select>
+</div>

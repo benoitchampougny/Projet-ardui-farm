@@ -1,16 +1,8 @@
 <div class="panel panel-default" style="min-height: 80vh;">
   <div class="panel-heading">
     Component Tree
-    <button type="button"
-            class="btn btn-primary btn-xs create-component"
-            style="float: right;"
-            data-target="#network-modal"
-            data-ajax-url="{%url 'network-create-component' %}">
-      <span class="glyphicon glyphicon-plus">
-      </span>
-    </button>
   </div>
   <div class="panel-body">
-    {% include "network/tree_element.html" with element=masterElement %}
+    {% include "network/component_tree/tree_element.html" with element=masterElement %}
   </div>
 </div>
