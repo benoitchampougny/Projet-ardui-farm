@@ -17,6 +17,8 @@
     <tbody>
       {% for srcPort in element.i2cPorts.all %}
         {% for dstPort in srcPort.connection.all %}
+          {% if dstPort.parent %}
+          {% with dstPort.parent as dst_element %}
           <tr>
             <td> {{dstPort.address}} </td>
             <td>
@@ -26,8 +28,14 @@
                 {{dstPort.parent.name}}
               </a>
             </td>
-            <td> <a href="#"> Remove </a> </td>
+            <td>
+              <a href="{% url "network-remove-i2c" element.component_type element.pk dst_element.component_type dst_element.pk %}">
+                Remove
+              </a>
+            </td>
           </tr>
+          {% endwith %}
+          {% endif %}
         {% endfor %}
       {% endfor %}
     </tbody>

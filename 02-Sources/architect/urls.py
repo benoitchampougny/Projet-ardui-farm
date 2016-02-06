@@ -1,6 +1,7 @@
 from django.conf.urls import url
 
 from . import views
+from . import api
 
 urlpatterns = [
     # Home views
@@ -13,18 +14,20 @@ urlpatterns = [
         views.component_detail,
         name='network-component-detail'),
 
-    # Specific Detail Views
-    url(r'^network/detail_arduino/(?P<id>\d+)$', views.detail_arduino, name='network-arduino-detail'),
-    url(r'^network/detail_raspberry/(?P<id>\d+)$', views.detail_raspberry, name='network-raspberry-detail'),
-    url(r'^network/detail_sensor/(?P<id>\d+)$', views.detail_sensor, name='network-sensor-detail'),
-    url(r'^network/detail_actuator/(?P<id>\d+)$', views.detail_actuator, name='network-actuator-detail'),
-
     # I2C Connection
     url(r'^network/add_i2c_connection/(?P<component_type>\w+)/(?P<id>\d+)$',
         views.add_i2c_connection,
         name='network-add-i2c'),
+    url(r'^network/remove_i2c_connection/(?P<component_type>\w+)/(?P<component_id>\d+)/(?P<dst_component_type>\w+)/(?P<dst_component_id>\d+)$',
+        views.remove_i2c_connection,
+        name='network-remove-i2c'),
 
     # Create Component
     url(r'^network/create_component$', views.create_component, name='network-create-component'),
+
+    # APIs
+    url(r'^api/get_component_model$',
+        api.get_component_model,
+        name='api-component-model')
 
 ]

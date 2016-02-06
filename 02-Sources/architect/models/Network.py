@@ -21,7 +21,7 @@ class NetworkComponent:
         return self.name
 
     def _get_component_name(self):
-        return self.__class__.__name__.lower()
+        return self.__class__.__name__
 
     def tree_element_template(self):
         component = self._get_component_name()
@@ -72,7 +72,9 @@ class I2cPort(models.Model):
     connection = models.ManyToManyField("self", blank=True)
 
     def __unicode__(self):
-        return "%s-%s" % (self.parent.name, self.address)
+        if self.parent is not None:
+            return "%s-%s" % (self.parent.name, self.address)
+        return self.address
 
     @property
     def parent(self):
@@ -98,7 +100,3 @@ class WifiPort(models.Model):
             return self.arduino_set.first()
         elif self.raspberry_set.count() > 0:
             return self.raspberry_set.first()
-
-
-
-ComponentModel={"arduino": Arduino, "raspberry": Raspberry, "sensor": Sensor, "actuator": Actuator}
