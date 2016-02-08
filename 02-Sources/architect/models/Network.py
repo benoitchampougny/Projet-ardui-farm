@@ -39,6 +39,7 @@ class Arduino(models.Model, NetworkComponent):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('ArduinoModel', null=True, default=None, blank=True)
     i2cPorts = models.ManyToManyField("I2cPort", blank=True)
+    digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
 
     def downI2C(self):
         return self.i2cPorts.filter(direction="DW")
@@ -55,6 +56,7 @@ class Raspberry(models.Model, NetworkComponent):
 class Sensor(models.Model, NetworkComponent):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
+    digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
 
 
 class Actuator(models.Model, NetworkComponent):
@@ -62,41 +64,48 @@ class Actuator(models.Model, NetworkComponent):
     cardModel = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
 
 
-class I2cPort(models.Model):
+class GenericPort(models.Model):
     DIRECTIONS = (
         ("UP", "Upward"),
         ("DW", "Downward"),
     )
     direction = models.CharField(max_length=2, choices=DIRECTIONS, default="DW")
-    address = models.CharField("I2C Address", max_length=200, default=None, blank=True)
+    address = models.CharField("Address", max_length=200, default=None, blank=True)
     connection = models.ManyToManyField("self", blank=True)
+
+    class Meta:
+        # Only use for inheritance.
+        abstract = True
 
     def __unicode__(self):
         if self.parent is not None:
             return "%s-%s" % (self.parent.name, self.address)
         return self.address
 
+    def _get_parent(self, parentNames):
+        for parentName in parentNames:
+            parentRelation = getattr(self, parentName+"_set")
+            if parentRelation.count() > 0:
+                return parentRelation.first()
+
+
+class I2cPort(GenericPort):
     @property
     def parent(self):
-        if self.arduino_set.count() > 0:
-            return self.arduino_set.first()
-        elif self.raspberry_set.count() > 0:
-            return self.raspberry_set.first()
+        return self._get_parent(['arduino', 'raspberry'])
 
 
-class WifiPort(models.Model):
-    number = models.IntegerField("Number", default=1)
-    address = models.CharField("IP Address", max_length=200, default=None, blank=True)
+class DigitalPort(GenericPort):
+    pwm = models.BooleanField(default=False)
+    @property
+    def parent(self):
+        return self._get_parent(['arduino', 'sensor', 'actuator'])
+
+
+class WifiPort(GenericPort):
     port = models.IntegerField("UDP Port", default=8000, blank=True)
     password = models.CharField("Password", max_length=200, default=None, blank=True)
-    connection = models.ManyToManyField("self", blank=True)
-
-    def __unicode__(self):
-        return self.address
 
     @property
     def parent(self):
-        if self.arduino_set.count() > 0:
-            return self.arduino_set.first()
-        elif self.raspberry_set.count() > 0:
-            return self.raspberry_set.first()
+        return self._get_parent(['arduino', 'raspberry'])
