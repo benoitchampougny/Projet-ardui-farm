@@ -38,7 +38,6 @@ class NetworkComponent:
 class Arduino(models.Model, NetworkComponent):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('ArduinoModel', null=True, default=None, blank=True)
-    ports = models.ManyToManyField("Port", blank=True)
     i2cPorts = models.ManyToManyField("I2cPort", blank=True)
     digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
 
@@ -49,7 +48,7 @@ class Arduino(models.Model, NetworkComponent):
         return self.digitalPorts.filter(direction="DW")
 
     def initDigitalPorts(self):
-        for pin in self.cardModel.pin_set.filter(functions__name):
+        for pin in self.cardModel.pin_set.filter(functions__name="digital"):
             dio = DigitalPort.objects.create(pin=pin)
             self.digitalPorts.add(dio)
 
@@ -69,6 +68,9 @@ class Sensor(models.Model, NetworkComponent):
     cardModel = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
     digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
 
+    def downDIO(self):
+        return self.digitalPorts.filter(direction="DW")
+
 
 class Actuator(models.Model, NetworkComponent):
     name = models.CharField("Card Name", max_length=200)
@@ -81,7 +83,7 @@ class GenericPort(models.Model):
         ("DW", "Downward"),
     )
     direction = models.CharField(max_length=2, choices=DIRECTIONS, default="DW")
-    address = models.CharField("Address", max_length=200, default=None, blank=True)
+    address = models.CharField("Address", max_length=200, default=None, blank=True, null=True)
     connection = models.ManyToManyField("self", blank=True)
 
     class Meta:
@@ -107,8 +109,7 @@ class I2cPort(GenericPort):
 
 
 class DigitalPort(GenericPort):
-    pwm = models.BooleanField(default=False)
-    pin = models.ForeignKey('Pin')
+    pins = models.ManyToManyField('Pin', related_name="ports")
     @property
     def parent(self):
         return self._get_parent(['arduino', 'sensor', 'actuator'])

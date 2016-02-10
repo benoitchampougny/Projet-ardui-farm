@@ -1,8 +1,7 @@
 <table class="table table-hover">
     <thead>
       <tr>
-        <th> Pin </th>
-        <th> Type </th>
+        <th> Pins used </th>
         <th> Connected Equipment</th>
         <th>
           <button type="button"
@@ -19,8 +18,7 @@
       {% for srcPort in element.digitalPorts.all %}
         {% for dstPort in srcPort.connection.all %}
           <tr>
-            <td> {{srcPort.pin.number}} </td>
-            <td> {% for function in pin.functions.all %} {{function}} {% endfor %}</td>
+            <td> {% for pin in srcPort.pins.all %} {{pin}} {% endfor %}</td>
             {% if dstPort.parent %}
             {% with dstPort.parent as dst_element %}
             <td>

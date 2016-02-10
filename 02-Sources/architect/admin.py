@@ -14,6 +14,7 @@ admin.site.register(Network.Arduino)
 admin.site.register(Network.Raspberry)
 admin.site.register(Network.Sensor)
 admin.site.register(Network.I2cPort)
+admin.site.register(Network.DigitalPort)
 admin.site.register(Network.WifiPort)
 
 # Library package

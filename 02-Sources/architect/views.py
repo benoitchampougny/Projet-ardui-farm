@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from architect.models.Network import *
-from architect.helpers import get_model_with_component_type
+from architect.helpers import get_class_by_name
 
 def home(request):
     return HttpResponseRedirect(reverse('network'))
@@ -18,7 +18,7 @@ def network(request, component_type=None, component_id=None):
         if component_type is None:
             element = masterElement
         else:
-            component_class = get_model_with_component_type(component_type)
+            component_class = get_class_by_name(component_type)
             element = get_object_or_404(component_class, pk=component_id)
         return render(  request, 'network/network.html', {'masterElement': masterElement, "element": element})
     else:
@@ -29,7 +29,7 @@ def network(request, component_type=None, component_id=None):
 #                       COMPONENT DETAILS
 #####################################################################################################
 def component_detail(request, component_type, component_id):
-    component_class = get_model_with_component_type(component_type)
+    component_class = get_class_by_name(component_type)
     element = get_object_or_404(component_class, pk=component_id)
     return render(  request, 'network/component_detail.html', {"element": element})
 
@@ -45,7 +45,7 @@ def create_component(request):
         component_model = request.POST.get('component_model')
 
         # Create the component
-        component_class = get_model_with_component_type(component_type)
+        component_class = get_class_by_name(component_type)
         if component_model != "":
             component_class.objects.create(name=component_name, cardModel=component_model)
         else:
@@ -60,7 +60,7 @@ def create_component(request):
 #####################################################################################################
 def add_i2c_connection(request, component_type, id):
     # Get the source element
-    component_model = get_model_with_component_type(component_type)
+    component_model = get_class_by_name(component_type)
     element = get_object_or_404(component_model, pk=id)
 
     if request.method == 'POST':
@@ -73,9 +73,9 @@ def add_i2c_connection(request, component_type, id):
         srcPort = element.i2cPorts.first()
         if srcPort.direction == "DW":
             # Create the target element
-            component_class = get_model_with_component_type(component_type)
+            component_class = get_class_by_name(component_type)
             if component_model_id is not None:
-                component_model_class = get_model_with_component_type(component_type+"Model")
+                component_model_class = get_class_by_name(component_type+"Model")
                 component_model = component_model_class.objects.get(pk=component_model_id)
                 new_component = component_class.objects.create(name=component_name, cardModel=component_model)
             else:
@@ -88,18 +88,71 @@ def add_i2c_connection(request, component_type, id):
         else:
             return HttpResponseBadRequest("I2C port already used.")
     else:
-        return render( request, 'network/component_detail/add_i2c_connection.html', {"element": element})
+        return render(  request,
+                        'network/component_detail/add_i2c_connection.html',
+                        {"element": element})
 
 def remove_i2c_connection(request, component_type, component_id, dst_component_type, dst_component_id):
     # Get the source element
-    component_model = get_model_with_component_type(component_type)
+    component_model = get_class_by_name(component_type)
     element = get_object_or_404(component_model, pk=component_id)
 
     # Get the destination element
-    dst_component_model = get_model_with_component_type(dst_component_type)
+    dst_component_model = get_class_by_name(dst_component_type)
     dst_element = get_object_or_404(dst_component_model, pk=dst_component_id)
 
     # Remove
     dst_element.i2cPorts.all().delete()
     dst_element.delete()
-    return HttpResponseRedirect(reverse('network-open', args=[element.component_type(), element.pk]))
+    return HttpResponseRedirect(reverse('network-open',
+                                        args=[element.component_type(),
+                                              element.pk]))
+
+#####################################################################################################
+#                     DIGITAL CONNECTIONS
+#####################################################################################################
+def add_dio_connection(request, component_type, id):
+    # Get the source element
+    component_model = get_class_by_name(component_type)
+    element = get_object_or_404(component_model, pk=id)
+
+    if request.method == 'POST':
+        # Retrieve data from user form
+        remote_component_name = request.POST.get('component_name')
+        remote_component_type_name = request.POST.get('component_type')
+        remote_component_model_id = request.POST.get('component_model')
+
+        # Retrieve Class from component name
+        remote_component_class = get_class_by_name(remote_component_type_name)
+        remote_component_model_class = get_class_by_name(remote_component_type_name+"Model")
+
+        # Get the available pin to connect
+        element_pins = element.cardModel.pin_set.filter(functions__name="Digital")
+        available_pins = element_pins.exclude(ports__in=element.digitalPorts.all())
+        sorted_available_pins = sorted(available_pins, key=lambda t: t.priority)
+
+        # Get needed pin
+        remote_component_model = remote_component_model_class.objects.get(pk=remote_component_model_id)
+        nb_of_digital_pin = remote_component_model.pin_set.filter(functions__name="Digital").count()
+
+        # Connect the pin to the new port
+        connected_pins = sorted_available_pins[:nb_of_digital_pin]
+        element_new_port = element.digitalPorts.create()
+        element_new_port.pins.add(*connected_pins)
+
+        # Create the remote composant
+        remote_component = remote_component_class.objects.create(name=remote_component_name,
+                                                                 cardModel=remote_component_model)
+
+        # Connect the remote component
+        remote_port = remote_component.digitalPorts.create(direction="UP")
+        element_new_port.connection.add(remote_port)
+        return HttpResponseRedirect(reverse('network-open', args=[element.component_type(), element.pk]))
+
+    else:
+        return render(request,
+                      'network/component_detail/add_dio_connection.html',
+                      {"element": element})
+
+def remove_dio_connection(request, component_type, component_id, dst_component_type, dst_component_id):
+    return HttpResponse()

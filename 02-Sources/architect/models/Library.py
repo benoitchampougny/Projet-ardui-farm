@@ -3,7 +3,7 @@
     These data will be updated by the community
 """
 from django.db import models
-from django.db.models import Max
+from django.db.models import Sum
 
 
 class ArduinoModel(models.Model):
@@ -15,20 +15,30 @@ class ArduinoModel(models.Model):
 
 class Pin(models.Model):
     number = models.IntegerField(default=0)
-    arduino = models.ForeignKey('ArduinoModel')
     functions = models.ManyToManyField('PinFunction')
+    sensor = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
+    arduino = models.ForeignKey('ArduinoModel', null=True, default=None, blank=True)
 
     class Meta:
         ordering = ['number']
 
+    @property
+    def parent(self):
+        if self.arduino is not None:
+            return self.arduino
+        else:
+            return self.sensor
+
     def __unicode__(self):
-        name = "%s-%02d" % (self.arduino.name, self.number)
+        name = "%s-%02d" % (self.parent.name, self.number)
         for function in self.functions.all():
             name += " [%s]" % function.name
         return name
+
     @property
     def priority(self):
         return self.functions.all().aggregate(Sum('priority'))
+
 
 class PinFunction(models.Model):
     name = models.CharField('Function Name', max_length=200)
@@ -46,15 +56,14 @@ class RaspberryModel(models.Model):
 
 class SensorModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
-    sketch = models.FileField(upload_to='sketches/', null=True, default=None)
-
+    sketch = models.FileField(upload_to='sketches/', blank=True, null=True)
     def __unicode__(self):
         return self.name
 
 
 class ActuatorModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
-    sketch = models.FileField(upload_to='sketches/', null=True, default=None)
+    sketch = models.FileField(upload_to='sketches/', blank=True, null=True)
 
     def __unicode__(self):
         return self.name

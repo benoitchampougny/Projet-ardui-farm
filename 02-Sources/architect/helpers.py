@@ -1,4 +1,4 @@
 from architect.models import Network
 
-def get_model_with_component_type(component_type):
+def get_class_by_name(component_type):
     return getattr(Network, component_type)
