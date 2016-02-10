@@ -1,6 +1,14 @@
 
 <ul class="">
+  <!-- I2C Connections -->
   {% for srcPort in element.downI2C %}
+    {% for dstPort in srcPort.connection.all %}
+      {% include "network/component_tree/tree_element.html" with element=dstPort.parent %}
+    {% endfor %}
+  {% endfor %}
+
+  <!-- Digital IO -->
+  {% for srcPort in element.downDIO %}
     {% for dstPort in srcPort.connection.all %}
       {% include "network/component_tree/tree_element.html" with element=dstPort.parent %}
     {% endfor %}

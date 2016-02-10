@@ -16,7 +16,7 @@ class Network(models.Model):
 
 
 class NetworkComponent:
-    """ Class to define common interface between components """
+    """ Class to define common methods between components """
     def __unicode__(self):
         return self.name
 
@@ -38,11 +38,21 @@ class NetworkComponent:
 class Arduino(models.Model, NetworkComponent):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('ArduinoModel', null=True, default=None, blank=True)
+    ports = models.ManyToManyField("Port", blank=True)
     i2cPorts = models.ManyToManyField("I2cPort", blank=True)
     digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
 
     def downI2C(self):
         return self.i2cPorts.filter(direction="DW")
+
+    def downDIO(self):
+        return self.digitalPorts.filter(direction="DW")
+
+    def initDigitalPorts(self):
+        for pin in self.cardModel.pin_set.filter(functions__name):
+            dio = DigitalPort.objects.create(pin=pin)
+            self.digitalPorts.add(dio)
+
 
 class Raspberry(models.Model, NetworkComponent):
     name = models.CharField("Card Name", max_length=200)
@@ -52,6 +62,7 @@ class Raspberry(models.Model, NetworkComponent):
 
     def downI2C(self):
         return self.i2cPorts.filter(direction="DW")
+
 
 class Sensor(models.Model, NetworkComponent):
     name = models.CharField("Card Name", max_length=200)
@@ -97,6 +108,7 @@ class I2cPort(GenericPort):
 
 class DigitalPort(GenericPort):
     pwm = models.BooleanField(default=False)
+    pin = models.ForeignKey('Pin')
     @property
     def parent(self):
         return self._get_parent(['arduino', 'sensor', 'actuator'])
