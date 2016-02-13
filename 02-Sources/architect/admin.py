@@ -1,5 +1,5 @@
 from django.contrib import admin
-from architect.models import Location, Network, Library
+from architect.models import Location, Network, Library, Message
 # Register your models here.
 
 
@@ -23,3 +23,8 @@ admin.site.register(Library.ArduinoModel)
 admin.site.register(Library.SensorModel)
 admin.site.register(Library.Pin)
 admin.site.register(Library.PinFunction)
+
+# Message
+admin.site.register(Message.Message)
+admin.site.register(Message.BCDData)
+admin.site.register(Message.Units)
