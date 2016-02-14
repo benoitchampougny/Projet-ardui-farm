@@ -22,6 +22,14 @@ urlpatterns = [
         views.remove_i2c_connection,
         name='network-remove-i2c'),
 
+    # I2C Connection
+    url(r'^network/add_dio_connection/(?P<component_type>\w+)/(?P<id>\d+)$',
+        views.add_dio_connection,
+        name='network-add-dio'),
+    url(r'^network/remove_dio_connection/(?P<component_type>\w+)/(?P<component_id>\d+)/(?P<dst_component_type>\w+)/(?P<dst_component_id>\d+)$',
+        views.remove_dio_connection,
+        name='network-remove-dio'),
+
     # Create Component
     url(r'^network/create_component$', views.create_component, name='network-create-component'),
 

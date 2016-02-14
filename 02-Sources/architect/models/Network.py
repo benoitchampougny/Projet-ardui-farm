@@ -16,7 +16,7 @@ class Network(models.Model):
 
 
 class NetworkComponent:
-    """ Class to define common interface between components """
+    """ Class to define common methods between components """
     def __unicode__(self):
         return self.name
 
@@ -44,6 +44,15 @@ class Arduino(models.Model, NetworkComponent):
     def downI2C(self):
         return self.i2cPorts.filter(direction="DW")
 
+    def downDIO(self):
+        return self.digitalPorts.filter(direction="DW")
+
+    def initDigitalPorts(self):
+        for pin in self.cardModel.pin_set.filter(functions__name="digital"):
+            dio = DigitalPort.objects.create(pin=pin)
+            self.digitalPorts.add(dio)
+
+
 class Raspberry(models.Model, NetworkComponent):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('RaspberryModel', null=True, default=None, blank=True)
@@ -53,10 +62,14 @@ class Raspberry(models.Model, NetworkComponent):
     def downI2C(self):
         return self.i2cPorts.filter(direction="DW")
 
+
 class Sensor(models.Model, NetworkComponent):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
     digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
+
+    def downDIO(self):
+        return self.digitalPorts.filter(direction="DW")
 
 
 class Actuator(models.Model, NetworkComponent):
@@ -70,7 +83,7 @@ class GenericPort(models.Model):
         ("DW", "Downward"),
     )
     direction = models.CharField(max_length=2, choices=DIRECTIONS, default="DW")
-    address = models.CharField("Address", max_length=200, default=None, blank=True)
+    address = models.CharField("Address", max_length=200, default=None, blank=True, null=True)
     connection = models.ManyToManyField("self", blank=True)
 
     class Meta:
@@ -96,7 +109,7 @@ class I2cPort(GenericPort):
 
 
 class DigitalPort(GenericPort):
-    pwm = models.BooleanField(default=False)
+    pins = models.ManyToManyField('Pin', related_name="ports")
     @property
     def parent(self):
         return self._get_parent(['arduino', 'sensor', 'actuator'])

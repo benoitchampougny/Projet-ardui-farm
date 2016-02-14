@@ -1,0 +1,20 @@
+{% extends "modal.html" %}
+
+{% block modal-title %}
+  Connect a digital equipment
+{% endblock %}
+
+{% block modal-body %}
+<div>
+  <form id="form-add_dio_connection" action="{% url "network-add-dio" element.component_type element.pk%}" method="post">
+    {% include "network/create_component_form.html"%}
+  </form>
+
+</div>
+{% endblock %}
+
+
+{% block modal-footer %}
+  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+  <button type="submit" class="btn btn-primary" form="form-add_dio_connection">Submit</button>
+{% endblock %}
