@@ -1,0 +1,23 @@
+{
+  //_MODEL_IDENTIFICATION
+
+  "brand": "x",
+  "model": "y",
+
+  //_ACCOUNT_PIN
+
+  "number_of_sensor": 2,
+  "number_of_actuator": 0,
+
+  //_DETAIL_OF_SENSOR
+
+  "detail_of_pin_sensor": {
+    "DHT_11": "2",
+    "DHT_22": "4"
+  },
+
+ //_DETAIL_OF_ACTUATOR
+
+ "detail_of__pin_actuator": {
+  }
+}

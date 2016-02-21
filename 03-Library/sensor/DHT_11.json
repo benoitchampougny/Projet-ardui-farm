@@ -1,0 +1,51 @@
+{
+
+  //_MODEL_IDENTIFICATION
+
+  "model": "DHT_11",
+
+  //_TYPE_IDENTIFICATION
+
+  "communication_type": "digital", //digital, analog, I2C, SPI, serial...
+  "adress":{                       //for I2C
+
+  }
+  //_ACCOUNT_PIN
+
+  "number_of_pin": 3,
+
+  //_DETAIL_PIN
+
+  "detail_of_pin": {
+    "1": "5v",
+    "2": "ground",
+    "3": "digital",
+  },
+
+  //_ACCOUNT_VARIABLE
+
+  "number_of_measure": 2,
+  "number_of_boolean": 0,
+
+  //_DETAIL_VARIABLE
+
+  "detail_of_measure": {
+    "temperature": "°c",
+    "humidity": "%",
+  },
+
+  "detail_of_boolean": {  //"level": "water" , "position": "window" ...
+  },
+
+  //_DETAIL_ARGS
+
+  "args_arduino": { // measure or boolean : number pin fonction (list if multiple)
+    "temperature": "3"
+    "humidity": "3"
+  }
+
+  "args_raspberry": {
+    "temperature": "3"
+    "humidity": "3"
+  }
+}

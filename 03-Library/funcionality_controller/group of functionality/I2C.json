@@ -1,0 +1,9 @@
+{
+  //_FUNCTIONALITY_IDENTIFICATION
+
+  "name": "I2C",
+
+  "dependent_functionality": ["sda","scl"],
+
+  "independent_functionality": []
+}

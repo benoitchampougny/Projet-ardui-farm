@@ -1,0 +1,9 @@
+{
+  //_FUNCTIONALITY_IDENTIFICATION
+
+  "name": {
+    "general_name": "digital",
+    "arduino": "digital",
+    "raspberry": "GPIO"
+  }
+}

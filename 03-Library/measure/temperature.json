@@ -1,0 +1,12 @@
+{
+  //_MEASURE_IDENTIFICATION
+
+  "measure": "temperature",
+
+  //_UNITY_OF_MEASURE
+
+  "unity_of_measure":[
+    "°C",
+    "°F"
+  ]
+} 

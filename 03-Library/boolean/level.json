@@ -1,0 +1,13 @@
+{
+  //_BOOLEAN_IDENTIFICATION
+
+  "measure": "level",
+
+  //_TYPE_OF_ELEMENT
+
+  "unity_of_measure":[
+    "water",
+    "fertilizer",
+    "food"
+  ]
+} 
