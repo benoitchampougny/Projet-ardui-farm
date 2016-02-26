@@ -1,0 +1,12 @@
+<div class="panel panel-default" style="min-height: 80vh;">
+  <div class="panel-heading">
+    {% if element %}
+      {{element.name}}
+    {% else %}
+      Component description
+    {% endif%}
+  </div>
+  {% if element %}
+    {% include element.detail_element_template %}
+  {% endif %}
+</div>

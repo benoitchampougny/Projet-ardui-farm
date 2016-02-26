@@ -1,0 +1,28 @@
+{% extends "modal.html" %}
+
+{% block modal-title %}
+  Add I2C Connection
+{% endblock %}
+
+{% block modal-body %}
+<div>
+  <form id="form-add_i2c_connection" action="{% url "network-add-i2c" element.component_type element.pk%}" method="post">
+    {% include "network/create_component_form.html"%}
+    <div class="form-group">
+      <label for="component-address">Component Address</label>
+      <input  type="text"
+              class="form-control"
+              id="component-address"
+              name="component_address"
+              placeholder="Address">
+    </div>
+  </form>
+
+</div>
+{% endblock %}
+
+
+{% block modal-footer %}
+  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+  <button type="submit" class="btn btn-primary" form="form-add_i2c_connection">Submit</button>
+{% endblock %}

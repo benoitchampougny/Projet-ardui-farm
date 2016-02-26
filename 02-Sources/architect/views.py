@@ -2,7 +2,9 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from architect.models.Network import *
+from architect.models.Location import *
 from architect.helpers import get_class_by_name
+from architect.helpers import get_class_location_by_name
 
 def home(request):
     return HttpResponseRedirect(reverse('network'))
@@ -24,7 +26,18 @@ def network(request, component_type=None, component_id=None):
     else:
         return HttpResponse()
 
-
+def location(request, component_type=None, component_id=None):
+    location = Location.objects.first()
+    if location is not None:
+        masterElement = location.master
+        if component_type is None:
+            element = masterElement
+        else:
+            component_class = get_class_location_by_name(component_type)
+            element = get_object_or_404(component_class, pk=component_id)
+        return render(  request, 'location/location.html', {'masterElement': masterElement, "element": element})
+    else:
+        return HttpResponse()
 #####################################################################################################
 #                       COMPONENT DETAILS
 #####################################################################################################
@@ -33,6 +46,10 @@ def component_detail(request, component_type, component_id):
     element = get_object_or_404(component_class, pk=component_id)
     return render(  request, 'network/component_detail.html', {"element": element})
 
+def location_component_detail(request, component_type, component_id):
+    component_class = get_class_location_by_name(component_type)
+    element = get_object_or_404(component_class, pk=component_id)
+    return render(  request, 'location/component_detail.html', {"element": element})
 
 #####################################################################################################
 #                       CREATE COMPONENT

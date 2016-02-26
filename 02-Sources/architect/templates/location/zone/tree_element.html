@@ -1,0 +1,9 @@
+
+<ul class="">
+  {% for srcPort in element.downLocation %}
+    {% for dstPort in srcPort.connection.all %}
+      {% include "location/component_tree/tree_element.html" with element=dstPort.parent %}
+    {% endfor %}
+  {% endfor %}
+
+</ul>

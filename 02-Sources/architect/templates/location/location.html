@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block left-panel %}
+  <div id="component_tree">
+    {% include "location/component_tree.html" %}
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div id="component_detail">
+    {% include "location/component_detail.html" %}
+  </div>
+{% endblock %}
+
+{% block view-scripts %}
+{% load staticfiles %}
+<script src={% static "js/app/location.js"%}></script>
+{% endblock %}

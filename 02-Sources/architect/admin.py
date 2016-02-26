@@ -5,8 +5,9 @@ from architect.models import Location, Network, Library, Message
 
 # Location package
 admin.site.register(Location.Location)
-admin.site.register(Location.TechnicalElement)
-admin.site.register(Location.Measure)
+admin.site.register(Location.Environment)
+admin.site.register(Location.Zone)
+admin.site.register(Location.LocationPort)
 
 # Network package
 admin.site.register(Network.Network)

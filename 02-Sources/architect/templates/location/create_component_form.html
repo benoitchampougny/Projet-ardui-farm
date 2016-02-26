@@ -1,0 +1,30 @@
+
+{% csrf_token %}
+<div class="form-group">
+  <label for="component-name">Component Name</label>
+  <input  type="text"
+          class="form-control"
+          id="component-name"
+          name="component_name"
+          placeholder="Name">
+</div>
+<div class="form-group">
+  <label for="select-component-type">Component Type</label>
+  <select id="select-component-type"
+          class="form-control"
+          name="component_type"
+          data-api-url="{% url "api-component-model" %}">
+    <option disabled selected> -- select an option -- </option>
+    <option value="Arduino">Arduino</option>
+    <option value="Raspberry">Raspberry</option>
+    <option value="Sensor">Sensor</option>
+    <option value="Actuator">Actuator</option>
+  </select>
+  <select id="select-component-model"
+          class="form-control"
+          name="component_model">
+  </select>
+</div>
+
+{% load staticfiles %}
+<script src={% static "js/app/create_component.js"%} charset="utf-8"></script>

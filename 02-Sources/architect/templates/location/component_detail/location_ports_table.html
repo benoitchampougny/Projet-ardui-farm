@@ -1,0 +1,48 @@
+
+
+{% if element.component_type != "Zone" %}
+  <table class="table table-hover">
+      <thead>
+        <tr>
+          <th width=90%> Environment</th>
+          <th width=10%>
+            <button type="button"
+                    class="btn btn-primary btn-xs create-component"
+                    data-target="#network-modal"
+                    data-ajax-url="{%url 'network-add-i2c' element.component_type element.pk %}">
+                    <span class="glyphicon glyphicon-plus">
+                    </span>
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+        {% for srcPort in element.downLocation %}
+          {% for dstPort in srcPort.connection.all %}
+            {% if dstPort.parent.component_type == "Environment" %}
+              {% if dstPort.parent %}
+              {% with dstPort.parent as dst_element %}
+                <tr>
+                  <td>
+                    <a class="location-refresh-detail"
+                        data-target="#component_detail"
+                        data-ajax-url="{% url "location-component-detail" dstPort.parent.component_type dstPort.parent.pk %}">
+                        {{dstPort.parent.name}}
+                      </a>
+                    </td>
+                    <td align=right>
+                      <a href="{% url "network-remove-i2c" element.component_type element.pk dst_element.component_type dst_element.pk %}">
+                        Remove
+                      </a>
+                    </td>
+                </tr>
+              {% endwith %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </tbody>
+{% endif %}
+      {% include "location/component_detail/zone_ports_table.html" %}
+
+</table>

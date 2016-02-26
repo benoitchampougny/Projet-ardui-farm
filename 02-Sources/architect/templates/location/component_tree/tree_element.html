@@ -1,0 +1,10 @@
+{% if element %}
+<li>
+  <a class="location-refresh-detail tree_element"
+     data-target="#component_detail"
+     data-ajax-url="{% url "location-component-detail" element.component_type element.pk %}">
+      {{element.name}}
+  </a>
+  {% include element.tree_element_template %}
+</li>
+{% endif %}

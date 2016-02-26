@@ -1,0 +1,18 @@
+{% extends "modal.html" %}
+
+{% block modal-title %}
+  Add new component
+{% endblock %}
+
+{% block modal-body %}
+<form id="form-create-component"
+      action="{% url "network-create-component" %}"
+      method="post">
+  {% include "network/create_component_form.html" %}
+</form>
+{% endblock %}
+
+{% block modal-footer %}
+  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+  <button type="submit" class="btn btn-primary" form="form-create-component">Submit</button>
+{% endblock %}
