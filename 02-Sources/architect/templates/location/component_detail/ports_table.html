@@ -1,12 +1,12 @@
 <table class="table table-hover">
     <thead>
       <tr>
-        <th width=90%> Zone</th>
+        <th width=90%> {{selectTable}}</th>
         <th width=10%>
           <button type="button"
                   class="btn btn-primary btn-xs create-component"
-                  data-target="#network-modal"
-                  data-ajax-url="{%url 'network-add-i2c' element.component_type element.pk %}">
+                  data-target="#location-modal"
+                  data-ajax-url="{%url 'location-add-location' element.component_type element.pk %}">
             <span class="glyphicon glyphicon-plus">
             </span>
           </button>
@@ -16,7 +16,7 @@
     <tbody>
       {% for srcPort in element.downLocation %}
         {% for dstPort in srcPort.connection.all %}
-          {% if dstPort.parent.component_type == "Zone" %}
+          {% if dstPort.parent.component_type == selectTable %}
             {% if dstPort.parent %}
             {% with dstPort.parent as dst_element %}
             <tr>

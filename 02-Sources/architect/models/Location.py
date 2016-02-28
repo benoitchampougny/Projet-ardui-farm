@@ -6,6 +6,7 @@
 """
 from django.db import models
 from architect.models.Network import Sensor
+from architect.models.Network import Actuator
 from django.utils.deconstruct import deconstructible
 
 class Location(models.Model):
@@ -49,6 +50,13 @@ class Environment(models.Model, LocationComponent):
     def downLocation(self):
         return self.locationPorts.filter(direction="DW")
 
+class Scenario(models.Model, LocationComponent):
+    name = models.CharField("Scenario Name", max_length=200)
+    locationPorts = models.ManyToManyField("LocationPort", blank=True)
+
+    def downLocation(self):
+        return self.locationPorts.filter(direction="DW")
+
 class GenericPort(models.Model):
     DIRECTIONS = (
         ("UP", "Upward"),
@@ -77,4 +85,4 @@ class GenericPort(models.Model):
 class LocationPort(GenericPort):
     @property
     def parent(self):
-        return self._get_parent(['zone', 'environment'])
+        return self._get_parent(['zone', 'environment', 'sensor', 'actuator', 'scenario'])

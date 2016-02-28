@@ -5,7 +5,7 @@
 """
 from django.db import models
 from architect.models.Library import *
-
+from architect.models.Location import *
 
 class Network(models.Model):
     name = models.CharField("Network Name", max_length=200)
@@ -13,7 +13,6 @@ class Network(models.Model):
 
     def __unicode__(self):
         return self.name
-
 
 class NetworkComponent:
     """ Class to define common methods between components """
@@ -41,6 +40,7 @@ class Arduino(models.Model, NetworkComponent):
     i2cPorts = models.ManyToManyField("I2cPort", blank=True)
     digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
 
+
     def downI2C(self):
         return self.i2cPorts.filter(direction="DW")
 
@@ -67,15 +67,25 @@ class Sensor(models.Model, NetworkComponent):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
     digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
+    LocationPorts = models.ManyToManyField("LocationPort", blank=True)
 
     def downDIO(self):
         return self.digitalPorts.filter(direction="DW")
 
+    def downLocation(self):
+        return self.locationPorts.filter(direction="DW")
 
 class Actuator(models.Model, NetworkComponent):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
+    digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
+    LocationPorts = models.ManyToManyField("LocationPort", blank=True)
 
+    def downDIO(self):
+        return self.digitalPorts.filter(direction="DW")
+
+    def downLocation(self):
+        return self.locationPorts.filter(direction="DW")
 
 class GenericPort(models.Model):
     DIRECTIONS = (

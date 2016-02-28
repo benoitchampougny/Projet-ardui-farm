@@ -16,6 +16,7 @@ class ArduinoModel(models.Model):
 class Pin(models.Model):
     number = models.IntegerField(default=0)
     functions = models.ManyToManyField('PinFunction')
+    actuator = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
     sensor = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
     arduino = models.ForeignKey('ArduinoModel', null=True, default=None, blank=True)
 
@@ -26,8 +27,10 @@ class Pin(models.Model):
     def parent(self):
         if self.arduino is not None:
             return self.arduino
-        else:
+        if self.sensor is not None:
             return self.sensor
+        if self.actuator is not None:
+            return self.actuator
 
     def __unicode__(self):
         name = "%s-%02d" % (self.parent.name, self.number)

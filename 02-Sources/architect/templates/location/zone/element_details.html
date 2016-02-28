@@ -2,7 +2,12 @@
   <dl class="dl-horizontal">
     <dt>Name</dt>
     <dd>{{element.name}}</dd>
+    <dt>Type</dt>
+    <dd>{{element.component_type}}</dd>
   </dl>
   <br>
-  {% include "location/component_detail/location_ports_table.html" %}
+  {% include "location/component_detail/ports_table.html" with selectTable="Zone" %}
+  {% include "location/component_detail/ports_table.html" with selectTable="Sensor" %}
+  {% include "location/component_detail/ports_table.html" with selectTable="Actuator" %}
+  {% include "location/component_detail/ports_table.html" with selectTable="Scenario" %}
 </div>

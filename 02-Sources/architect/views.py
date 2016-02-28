@@ -27,6 +27,7 @@ def network(request, component_type=None, component_id=None):
         return HttpResponse()
 
 def location(request, component_type=None, component_id=None):
+    selectTable = ""
     location = Location.objects.first()
     if location is not None:
         masterElement = location.master
@@ -35,7 +36,7 @@ def location(request, component_type=None, component_id=None):
         else:
             component_class = get_class_location_by_name(component_type)
             element = get_object_or_404(component_class, pk=component_id)
-        return render(  request, 'location/location.html', {'masterElement': masterElement, "element": element})
+        return render(  request, 'location/location.html', {'masterElement': masterElement, "element": element, "selectTable": selectTable})
     else:
         return HttpResponse()
 #####################################################################################################
@@ -71,6 +72,51 @@ def create_component(request):
     else:
         return render(  request, 'network/component_tree/create_component.html', {})
 
+#####################################################################################################
+#                       CREATE LOCATION COMPONENT
+#####################################################################################################
+def create_location_component(request):
+    if request.method == 'POST':
+        # Retrieve form parameters
+        component_type = request.POST.get('component_type')
+        component_name = request.POST.get('component_name')
+
+        # Create the component
+        component_class = get_class_by_name(component_type)
+        component_class.objects.create(name=component_name)
+        return HttpResponseRedirect(reverse('network'))
+    else:
+        return render(  request, 'location/component_tree/create_component.html', {})
+#####################################################################################################
+#                     LOCATION CONNECTIONS
+#####################################################################################################
+def add_location_connection(request, component_type, id):
+    # Get the source element
+    component_model = get_class_by_name(component_type)
+    element = get_object_or_404(component_model, pk=id)
+
+    if request.method == 'POST':
+        # Retrieve data from user form
+        component_type = request.POST.get('component_type')
+        component_name = request.POST.get('component_name')
+
+        srcPort = element.locationPorts.first()
+        if srcPort.direction == "DW":
+            # Create the target element
+            component_class = get_class_by_name(component_type)
+
+            new_component = component_class.objects.create(name=component_name)
+            dstPort = new_component.locationPorts.create(direction="UP")
+
+            # Link target element to the source element
+            srcPort.connection.add(dstPort)
+            return HttpResponseRedirect(reverse('location-open', args=[element.component_type(), element.pk]))
+        else:
+            return HttpResponseBadRequest("I2C port already used.")
+    else:
+        return render(  request,
+                        'location/component_detail/add_location_connection.html',
+                        {"element": element})
 
 #####################################################################################################
 #                     I2C CONNECTIONS

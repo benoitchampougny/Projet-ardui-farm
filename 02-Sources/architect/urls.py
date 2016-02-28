@@ -18,7 +18,12 @@ urlpatterns = [
     url(r'^location/detail/(?P<component_type>\w+)/(?P<component_id>\d+)$',
         views.location_component_detail,
         name='location-component-detail'),
-        
+
+    # Location Connection
+    url(r'^location/add_location_connection/(?P<component_type>\w+)/(?P<id>\d+)$',
+        views.add_location_connection,
+        name='location-add-location'),
+
     # I2C Connection
     url(r'^network/add_i2c_connection/(?P<component_type>\w+)/(?P<id>\d+)$',
         views.add_i2c_connection,
@@ -37,6 +42,9 @@ urlpatterns = [
 
     # Create Component
     url(r'^network/create_component$', views.create_component, name='network-create-component'),
+
+    # Create location Component
+    url(r'^location/create_component$', views.create_location_component, name='location-create-component'),
 
     # APIs
     url(r'^api/get_component_model$',
