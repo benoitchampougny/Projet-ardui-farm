@@ -6,7 +6,7 @@
           <button type="button"
                   class="btn btn-primary btn-xs create-component"
                   data-target="#location-modal"
-                  data-ajax-url="{%url 'location-add-location' element.component_type element.pk %}">
+                  data-ajax-url="{%url "location-add-location" element.component_type selectTable element.pk %}">
             <span class="glyphicon glyphicon-plus">
             </span>
           </button>
@@ -28,7 +28,7 @@
                   </a>
                 </td>
                 <td align=right>
-                  <a href="{% url "network-remove-i2c" element.component_type element.pk dst_element.component_type dst_element.pk %}">
+                  <a href="{% url "location-remove-location" element.component_type element.pk dst_element.component_type dst_element.pk %}">
                    Remove
                 </a>
               </td>

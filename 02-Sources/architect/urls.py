@@ -18,9 +18,12 @@ urlpatterns = [
     url(r'^location/detail/(?P<component_type>\w+)/(?P<component_id>\d+)$',
         views.location_component_detail,
         name='location-component-detail'),
+    url(r'^location/remove_location_connection/(?P<component_type>\w+)/(?P<component_id>\d+)/(?P<dst_component_type>\w+)/(?P<dst_component_id>\d+)$',
+        views.remove_location_connection,
+        name='location-remove-location'),        
 
     # Location Connection
-    url(r'^location/add_location_connection/(?P<component_type>\w+)/(?P<id>\d+)$',
+    url(r'^location/add_location_connection/(?P<component_type>\w+)/(?P<selectTable>\w+)/(?P<id>\d+)$',
         views.add_location_connection,
         name='location-add-location'),
 

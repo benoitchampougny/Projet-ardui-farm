@@ -84,40 +84,58 @@ def create_location_component(request):
         # Create the component
         component_class = get_class_by_name(component_type)
         component_class.objects.create(name=component_name)
-        return HttpResponseRedirect(reverse('network'))
+        return HttpResponseRedirect(reverse('location'))
     else:
         return render(  request, 'location/component_tree/create_component.html', {})
 #####################################################################################################
 #                     LOCATION CONNECTIONS
 #####################################################################################################
-def add_location_connection(request, component_type, id):
+def add_location_connection(request, component_type, selectTable, id):
     # Get the source element
-    component_model = get_class_by_name(component_type)
+    component_model = get_class_location_by_name(component_type)
     element = get_object_or_404(component_model, pk=id)
-
     if request.method == 'POST':
         # Retrieve data from user form
-        component_type = request.POST.get('component_type')
+        component_type = selectTable
         component_name = request.POST.get('component_name')
 
         srcPort = element.locationPorts.first()
+
+        if srcPort.direction != "DW":
+            srcPort = element.locationPorts.create(direction="DW")
+
         if srcPort.direction == "DW":
             # Create the target element
-            component_class = get_class_by_name(component_type)
-
-            new_component = component_class.objects.create(name=component_name)
+            component_class = get_class_location_by_name(component_type)
+            if selectTable == "Environment" or selectTable == "Zone":
+                new_component = component_class.objects.create(name=component_name)
+            else:
+                new_component = component_name
             dstPort = new_component.locationPorts.create(direction="UP")
 
             # Link target element to the source element
             srcPort.connection.add(dstPort)
-            return HttpResponseRedirect(reverse('location-open', args=[element.component_type(), element.pk]))
-        else:
-            return HttpResponseBadRequest("I2C port already used.")
+        return HttpResponseRedirect(reverse('location-open', args=[element.component_type(), element.pk]))
     else:
         return render(  request,
                         'location/component_detail/add_location_connection.html',
-                        {"element": element})
+                        {"element": element, "selectTable": selectTable})
 
+def remove_location_connection(request, component_type, component_id, dst_component_type, dst_component_id):
+    # Get the source element
+    component_model = get_class_location_by_name(component_type)
+    element = get_object_or_404(component_model, pk=component_id)
+
+    # Get the destination element
+    dst_component_model = get_class_location_by_name(dst_component_type)
+    dst_element = get_object_or_404(dst_component_model, pk=dst_component_id)
+
+    # Remove
+    dst_element.locationPorts.all().delete()
+    dst_element.delete()
+    return HttpResponseRedirect(reverse('location-open',
+                                        args=[element.component_type(),
+                                              element.pk]))
 #####################################################################################################
 #                     I2C CONNECTIONS
 #####################################################################################################
