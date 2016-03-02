@@ -1,34 +1,34 @@
 {
-  //_MODEL_IDENTIFICATION
+
 
   "brand": "Arduino",
-  "model": "Uno",
+  "model": "UnoTOTO",
 
-  //_ACCOUNT_PIN
+
 
   "number_of_pin_digital_IO": 14,
   "number_of_pin_analog_INPUT": 6,
 
-  //_DETAIL_DIGITAL_PIN
+
 
   "detail_of_pin_digital_IO": {
-    "0": "rx",
-    "1": "tx",
-    "2": "",
-    "3": "pwm",
-    "4": "",
-    "5": "pwm",
-    "6": "pwm",
-    "7": "",
-    "8": "",
-    "9": "pwm",
-    "10": ["pwm","ss"],
-    "11": ["pwm","mosi"],
-    "12": "miso",
-    "13": "sck"
+    "0": ["rx"],
+    "1": ["tx"],
+    "2": [""],
+    "3": ["PWM"],
+    "4": [""],
+    "5": ["PWM"],
+    "6": ["PWM"],
+    "7": [""],
+    "8": [""],
+    "9": ["PWM"],
+    "10": ["PWM","SPI"],
+    "11": ["PWM","SPI"],
+    "12": ["SPI"],
+    "13": ["I2C"]
   },
 
- //_DETAIL_ANALOG_INPUT_PIN
+
 
  "detail_of_pin_analog_INPUT": {
     "0": "",
