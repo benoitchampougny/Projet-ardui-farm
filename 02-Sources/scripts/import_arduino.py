@@ -1,17 +1,33 @@
+"""
+  Copyright (c) 2016 Benoit CHAMPOUGNY.  All right reserved.
+
+  This file is part of Arduifarm
+
+  Arduifarm is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Arduifarm is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+      along with Arduifarm.  If not, see <http://www.gnu.org/licenses/>. 2
+"""
+
 from architect.models.Library import *
 
 import json
 with open('../03-Library/arduino/uno.json') as data_file:
     data = json.load(data_file)
 
+def digitalControlerPin (data, model, detailOfPin,):
 
-arduino, created = ArduinoModel.objects.get_or_create(name=data['model'])
-
-if created:
-    for pinNumber, functions in data['detail_of_pin_digital_IO'].iteritems():
+    arduino = model.objects.create(name=data['model'])
+    detailOfPin =""
+    for pinNumber, functions in data[detailOfPin].iteritems():
         functionsObj = PinFunction.objects.filter(name__in=functions)
         pin = Pin.objects.create(number=pinNumber, arduino=arduino)
         pin.functions.add(*list(functionsObj))
-
-
-print "done"

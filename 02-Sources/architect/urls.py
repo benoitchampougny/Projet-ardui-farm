@@ -1,3 +1,22 @@
+"""
+  Copyright (c) 2016 Benoit CHAMPOUGNY.  All right reserved.
+
+  This file is part of Arduifarm
+
+  Arduifarm is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Arduifarm is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+      along with Arduifarm.  If not, see <http://www.gnu.org/licenses/>. 2
+"""
+
 from django.conf.urls import url
 
 from . import views
@@ -20,7 +39,7 @@ urlpatterns = [
         name='location-component-detail'),
     url(r'^location/remove_location_connection/(?P<component_type>\w+)/(?P<component_id>\d+)/(?P<dst_component_type>\w+)/(?P<dst_component_id>\d+)$',
         views.remove_location_connection,
-        name='location-remove-location'),        
+        name='location-remove-location'),
 
     # Location Connection
     url(r'^location/add_location_connection/(?P<component_type>\w+)/(?P<selectTable>\w+)/(?P<id>\d+)$',

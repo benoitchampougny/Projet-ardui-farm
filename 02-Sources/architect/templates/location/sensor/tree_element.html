@@ -16,14 +16,15 @@
   You should have received a copy of the GNU General Public License
       along with Arduifarm.  If not, see <http://www.gnu.org/licenses/>. 2
 """ %}
-
 <ul class="">
   {% for srcPort in element.downLocation %}
     {% for dstPort in srcPort.connection.all %}
+      {% if dstPort.parent.component_type == "Environment" %}
+        {% include "location/component_tree/tree_element.html" with element=dstPort.parent %}
+      {% endif %}
       {% if dstPort.parent.component_type == "Zone" %}
         {% include "location/component_tree/tree_element.html" with element=dstPort.parent %}
       {% endif %}
     {% endfor %}
   {% endfor %}
-
 </ul>
