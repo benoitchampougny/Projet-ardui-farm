@@ -14,7 +14,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-      along with Arduifarm.  If not, see <http://www.gnu.org/licenses/>. 2
+  along with Arduifarm.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 """
@@ -27,13 +27,28 @@ from django.db.models import Sum
 
 class ArduinoModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
+    version = models.CharField('Version', null=True, default=None, max_length=200)
 
     def __unicode__(self):
         return self.name
 
+class ShieldModel(models.Model):
+    name = models.CharField("Model Name", max_length=200)
+    version = models.CharField('Version', null=True, default=None, max_length=200)
+
+    def __unicode__(self):
+        return self.name
+
+class I2cAdress(models.Model):
+    name = models.CharField("I2c Adress Name", max_length=200)
+    actuator = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
+    sensor = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
+
+    def __unicode__(self):
+        return self.name
 
 class Pin(models.Model):
-    number = models.IntegerField(default=0)
+    number = models.CharField(max_length=200)
     functions = models.ManyToManyField('PinFunction')
     actuator = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
     sensor = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
@@ -61,9 +76,69 @@ class Pin(models.Model):
     def priority(self):
         return self.functions.all().aggregate(Sum('priority'))
 
+class Element(models.Model):
+    name = models.CharField('Element Name', max_length=200)
+    version = models.CharField('Version', null=True, default=None, max_length=200)
+    actuator = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
+    sensor = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+class Boolean(models.Model):
+    name = models.CharField('Boolean Name', max_length=200)
+    version = models.CharField('Version', null=True, default=None, max_length=200)
+    element = models.ForeignKey('Element', max_length=200)
+    true = models.CharField('True', max_length=200)
+    false = models.CharField('False', max_length=200)
+    actuator = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
+    sensor = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+class SpecialMeasure(models.Model):
+    name = models.CharField('Special Measure Name', max_length=200)
+    version = models.CharField('Version', null=True, default=None, max_length=200)
+    specialUnity = models.CharField('Special Unity', max_length=200)
+
+    def __unicode__(self):
+        return self.name
+
+class Measure(models.Model):
+    name = models.CharField('Measure Name', max_length=200)
+    version = models.CharField('Version', null=True, default=None, max_length=200)
+    nameUnity = models.CharField('Unity Of Measue', max_length=200)
+    actuator = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
+    sensor = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
+
+    def __unicode__(self):
+        return self.name
 
 class PinFunction(models.Model):
     name = models.CharField('Function Name', max_length=200)
+    version = models.CharField('Version', null=True, default=None, max_length=200)
+    shortName = models.CharField('Function Short Name', null=True, default=None, max_length=200)
+    priority = models.IntegerField('Function Priority', default=0)
+
+    def __unicode__(self):
+        return self.name
+
+class OptionalFunction(models.Model):
+    name = models.CharField('Function Name', max_length=200)
+    version = models.CharField('Version', null=True, default=None, max_length=200)
+    optionalPin = models.ForeignKey('PinFunction', max_length=200)
+    priority = models.IntegerField('Function Priority', default=0)
+
+    def __unicode__(self):
+        return self.name
+
+
+class GroupFunction(models.Model):
+    name = models.CharField('Function Name', max_length=200)
+    version = models.CharField('Version', null=True, default=None, max_length=200)
+    groupPin = models.ForeignKey('PinFunction', null=True, default=None, max_length=200)
+    optionalPin = models.ForeignKey('OptionalFunction', null=True, default=None, max_length=200)
     priority = models.IntegerField('Function Priority', default=0)
 
     def __unicode__(self):
@@ -71,6 +146,7 @@ class PinFunction(models.Model):
 
 class RaspberryModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
+    version = models.CharField("Version", null=True, default=None, max_length=200)
 
     def __unicode__(self):
         return self.name
@@ -78,13 +154,16 @@ class RaspberryModel(models.Model):
 
 class SensorModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
+    version = models.CharField("Version", null=True, default=None, max_length=200)
     sketch = models.FileField(upload_to='sketches/', blank=True, null=True)
+
     def __unicode__(self):
         return self.name
 
 
 class ActuatorModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
+    version = models.CharField("Version", null=True, default=None, max_length=200)
     sketch = models.FileField(upload_to='sketches/', blank=True, null=True)
 
     def __unicode__(self):

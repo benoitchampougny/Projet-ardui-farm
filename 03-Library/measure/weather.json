@@ -1,0 +1,9 @@
+{
+  "version": "1.0",
+
+  "measure": "weather",
+
+  "unityOfMeasure":[
+    "°C"
+  ]
+}

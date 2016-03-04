@@ -1,0 +1,9 @@
+{
+  "version": "1.0",
+
+  "name": "spi",
+
+  "groupedFunctionality": ["sck", "mosi", "miso"],
+
+  "optionalFunctionality": ["ss"]
+}

@@ -1,55 +1,25 @@
 {
-
-  //_MODEL_IDENTIFICATION
+  "version": "1.0",
 
   "model": "relay",
 
-  //_TYPE_IDENTIFICATION
-
-  "type_of_actuator": "relay"
-  "communication_type": "digital", //digital, analog, I2C, SPI, serial...
-  "adress":{                       //for I2C
-
-  }
-  //_ACCOUNT_PIN
-
-  "number_of_pin": 3,
-
-  //_DETAIL_PIN
+  "adress":[],
 
   "detail_of_pin": {
     "1": "5v",
-    "2": "ground",
+    "2": "gnd",
     "3": "digital",
   },
 
-  //_ACCOUNT_VARIABLE
-
-  "number_of_pwm":0,
-  "number_of_str": 0,
-  "number_of_boolean": 1,
-
-  //_DETAIL_VARIABLE
-
-  "name_of_pwm": {
+  "nameOfPwm": {
   },
 
-  "name_of_str": {
+  "nameOfStr": {
   },
 
-  "name_of_boolean": {
+  "nameOfBoolean": {
     "1": "O/I"
-  }
+  },
 
-  //_DETAIL_ARGS
-
-  "args_arduino": {
-    "digital": "3",
-    "boolean": "1"
-  }
-
-  "args_raspberry": {
-    "digital": "3",
-    "boolean": "1"
-  }
+  "detailOfElement": ["air"]
 }

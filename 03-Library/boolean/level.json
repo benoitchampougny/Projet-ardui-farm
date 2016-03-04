@@ -1,13 +1,16 @@
 {
-  //_BOOLEAN_IDENTIFICATION
+  "version": "1.0",
 
   "measure": "level",
 
-  //_TYPE_OF_ELEMENT
-
-  "unity_of_measure":[
+  "element":[
     "water",
     "fertilizer",
     "food"
-  ]
-} 
+  ],
+
+  "booleanDescription": {
+    "True": "high level",
+    "False": "low level"
+  }
+}

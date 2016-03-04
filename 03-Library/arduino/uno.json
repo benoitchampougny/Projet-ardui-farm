@@ -1,41 +1,47 @@
 {
-
+  "version": "1.0",
 
   "brand": "Arduino",
-  "model": "UnoTOTO",
+  "model": "Uno",
 
-
-
-  "number_of_pin_digital_IO": 14,
-  "number_of_pin_analog_INPUT": 6,
-
-
-
-  "detail_of_pin_digital_IO": {
-    "0": ["rx"],
-    "1": ["tx"],
-    "2": [""],
-    "3": ["PWM"],
-    "4": [""],
-    "5": ["PWM"],
-    "6": ["PWM"],
-    "7": [""],
-    "8": [""],
-    "9": ["PWM"],
-    "10": ["PWM","SPI"],
-    "11": ["PWM","SPI"],
-    "12": ["SPI"],
-    "13": ["I2C"]
+  "detailOfPin":{
+    "0": ["digital","rx"],
+    "1": ["digital","tx"],
+    "2": ["digital",""],
+    "3": ["digital","pwm"],
+    "4": ["digital",""],
+    "5": ["digital","pwm"],
+    "6": ["digital","pwm"],
+    "7": ["digital",""],
+    "8": ["digital",""],
+    "9": ["digital","pwm"],
+    "10": ["digital","pwm","ss"],
+    "11": ["digital","pwm","mosi"],
+    "12": ["digital","miso"],
+    "13": ["digital","sck"],
+    "A0": ["adc"],
+    "A1": ["adc"],
+    "A2": ["adc"],
+    "A3": ["adc"],
+    "A4": ["adc","sda"],
+    "A5": ["adc","scl"]
   },
 
+  "detailOfGroup": {
+    "1": {
+      "i2c":"A4",
+      "i2c":"A5"
+    },
+    "2": {
+      "spi":"10",
+      "spi":"11",
+      "spi":"12",
+      "spi":"13"
+    },
+    "3": {
+      "serial":"0",
+      "serial":"1"
+    }
 
 
- "detail_of_pin_analog_INPUT": {
-    "0": "",
-    "1": "",
-    "2": "",
-    "3": "",
-    "4": "sda",
-    "5": "scl"
-  }
 }

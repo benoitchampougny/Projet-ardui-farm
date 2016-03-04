@@ -1,9 +1,9 @@
 {
-  //_FUNCTIONALITY_IDENTIFICATION
+  "version": "1.0",
 
-  "name": "I2C",
+  "name": "i2c",
 
-  "dependent_functionality": ["sda","scl"],
+  "groupedFunctionality": ["sda","scl"],
 
-  "independent_functionality": []
+  "optionalFunctionality": []
 }

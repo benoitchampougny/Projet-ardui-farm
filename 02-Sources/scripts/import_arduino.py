@@ -14,20 +14,14 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-      along with Arduifarm.  If not, see <http://www.gnu.org/licenses/>. 2
+  along with Arduifarm.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from architect.models.Library import *
+from scripts.Function import *
 
 import json
 with open('../03-Library/arduino/uno.json') as data_file:
     data = json.load(data_file)
 
-def digitalControlerPin (data, model, detailOfPin,):
-
-    arduino = model.objects.create(name=data['model'])
-    detailOfPin =""
-    for pinNumber, functions in data[detailOfPin].iteritems():
-        functionsObj = PinFunction.objects.filter(name__in=functions)
-        pin = Pin.objects.create(number=pinNumber, arduino=arduino)
-        pin.functions.add(*list(functionsObj))
+digitalControlerPin (data, ArduinoModel, detailOfPin)

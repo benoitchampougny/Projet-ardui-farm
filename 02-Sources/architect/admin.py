@@ -47,6 +47,16 @@ admin.site.register(Library.SensorModel)
 admin.site.register(Library.ActuatorModel)
 admin.site.register(Library.Pin)
 admin.site.register(Library.PinFunction)
+admin.site.register(Library.ShieldModel)
+admin.site.register(Library.I2cAdress)
+admin.site.register(Library.Element)
+admin.site.register(Library.Boolean)
+admin.site.register(Library.SpecialMeasure)
+admin.site.register(Library.Measure)
+admin.site.register(Library.OptionalFunction)
+admin.site.register(Library.GroupFunction)
+
+
 
 # Message
 admin.site.register(Message.Message)

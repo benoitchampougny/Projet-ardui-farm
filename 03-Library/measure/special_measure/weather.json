@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+
+  "unityName": "weather",
+
+  "unityDetail":{
+    "1": "sun",
+    "2": "rain",
+    "3": "snow",
+    "4": "clouy"
+  }
+}
