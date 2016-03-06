@@ -48,7 +48,7 @@ class I2cAdress(models.Model):
         return self.name
 
 class Pin(models.Model):
-    number = models.IntegerField()
+    number = models.CharField(max_length=100)
     functions = models.ManyToManyField('PinFunction')
     actuator = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
     sensor = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
@@ -67,7 +67,7 @@ class Pin(models.Model):
             return self.actuator
 
     def __unicode__(self):
-        name = "%s-%02d" % (self.parent.name, self.number)
+        name = "%s-%s" % (self.parent.name, self.number)
         for function in self.functions.all():
             name += " [%s]" % function.name
         return name
