@@ -24,6 +24,7 @@
 from django.db import models
 from architect.models.Library import *
 from architect.models.Location import *
+from architect.models.Message import *
 
 class Network(models.Model):
     name = models.CharField("Network Name", max_length=200)

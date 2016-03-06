@@ -48,7 +48,7 @@ class I2cAdress(models.Model):
         return self.name
 
 class Pin(models.Model):
-    number = models.CharField(max_length=200)
+    number = models.IntegerField()
     functions = models.ManyToManyField('PinFunction')
     actuator = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
     sensor = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
@@ -144,6 +144,7 @@ class GroupFunction(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class RaspberryModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
     version = models.CharField("Version", null=True, default=None, max_length=200)
@@ -155,7 +156,7 @@ class RaspberryModel(models.Model):
 class SensorModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
     version = models.CharField("Version", null=True, default=None, max_length=200)
-    sketch = models.FileField(upload_to='sketches/', blank=True, null=True)
+    publish = models.ManyToManyField('Message', blank=True)
 
     def __unicode__(self):
         return self.name
@@ -165,6 +166,7 @@ class ActuatorModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
     version = models.CharField("Version", null=True, default=None, max_length=200)
     sketch = models.FileField(upload_to='sketches/', blank=True, null=True)
+    suscribe = models.ManyToManyField('Message', blank=True)
 
     def __unicode__(self):
         return self.name
