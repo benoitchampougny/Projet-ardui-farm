@@ -67,7 +67,7 @@ class Pin(models.Model):
             return self.actuator
 
     def __unicode__(self):
-        name = "%s-%02d" % (self.parent.name, self.number)
+        name = "%s-%s" % (self.parent.name, self.number)
         for function in self.functions.all():
             name += " [%s]" % function.name
         return name
