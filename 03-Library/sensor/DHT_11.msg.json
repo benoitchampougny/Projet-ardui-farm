@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+
+  "name": "DHT11 Humidity",
+  "label": 1,
+  "data": [
+    {
+      "name": "humidity",
+      "type": "BCD",
+      "lsb": 10,
+      "msb": 22,
+      "units": "percent",
+      "min": 0,
+      "max": 100,
+      "scale": 1,
+      "decimal_place": 0,
+    },
+  ]
+}
