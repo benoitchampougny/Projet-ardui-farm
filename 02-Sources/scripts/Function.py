@@ -54,8 +54,7 @@ def digitalControlerPinSensor (datas, model, PinFunction, Pin, detailOfPin):
             pin = Pin.objects.create(number=pinNumber, sensor=sensor)
             pin.functions.add(*list(functionsObj))
 
-def listExtract (datas, Measure, Unit, key, nameobj, title):
-    for data in datas:
+def listExtract (data, Measure, Unit, key, nameobj, title):
         measure = Measure.objects.get(name=data[nameobj])
         for unit in data[title]:
                 unitobj = Unit.objects.get(name=unit)
@@ -77,23 +76,27 @@ def grpOptFunctionality(datas, GroupFunctionModel, OptionalFunctionModel):
                 groupfunctionmodelobj.optionalFunctionModel=optionalfunctionmodelobj
                 groupfunctionmodelobj.save()
 
-def tupleExtract (datas, Model, name, title, titleTuple):
-    for data in datas:
+def tupleExtract (data, Model, name, title, titleTuple):
         modelobj = Model.objects.get(name=data[name])
         for a, b in data[titleTuple].iteritems():
             if a == title:
                 exec("modelobj.%s=b" % title)
                 modelobj.save()
 
-def version(datas, Model):
-    for data in datas:
-        modelobj = Model.objects.get(name=data['name'])
-        if data['version'] > modelobj.version:
-                groupfunctionmodelobj = GroupFunctionModel.objects.get(name=data['name'])
-                optionalfunctionmodelobj = OptionalFunctionModel.objects.get(name=data['name'])
-                groupfunctionmodelobj.optionalFunctionModel=optionalfunctionmodelobj
-                groupfunctionmodelobj.save()
-
+def version(data, Model, name):
+    modelobj = Model.objects.get(name=data[name])
+    if data['version'] > modelobj.version:
+        rename= modelobj.name + "_" + str(modelobj.version) + "_old_version"
+        modelobj.name = rename
+        modelobj.lastVersion = False
+        modelobj.save()
+        Model.objects.create(name=data[name], version=data['version'])
+        return True
+    if not modelobj:
+        Model.objects.create(name=data[name], version=data['version'])
+        return True
+    else:
+        return False
 
 def createName (datas, Model, name):
     for data in datas:

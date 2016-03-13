@@ -20,5 +20,8 @@
 from architect.models.Library import *
 from scripts.Function import *
 
-datas =forDirectory("measure")
-listExtract (datas, Measure, Unit, "measure", "measure", "unityOfMeasure")
+datas = forDirectory("measure")
+for data in datas:
+    if version(data, Measure, "measure"):
+        
+        listExtract (data, Measure, Unit, "unit", "measure", "unityOfMeasure")

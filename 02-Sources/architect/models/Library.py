@@ -35,6 +35,7 @@ class ArduinoModel(models.Model):
 class ActuatorModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
     version = models.FloatField('Version', default=0.0)
+    lastVersion = models.BooleanField('Last Version', default=True)
     sketch = models.FileField(upload_to='sketches/', blank=True, null=True)
 
     def __unicode__(self):
@@ -43,6 +44,7 @@ class ActuatorModel(models.Model):
 class Boolean(models.Model):
     name = models.CharField('Boolean Name', max_length=200)
     version = models.FloatField('Version', default=0.0)
+    lastVersion = models.BooleanField('Last Version', default=True)
     true = models.CharField('True', max_length=200)
     false = models.CharField('False', max_length=200)
     element = models.ManyToManyField('Element',  blank=True)
@@ -53,6 +55,7 @@ class Boolean(models.Model):
 class Element(models.Model):
     name = models.CharField('Element Name', max_length=200)
     version = models.FloatField('Version', default=0.0)
+    lastVersion = models.BooleanField('Last Version', default=True)
 
     def __unicode__(self):
         return self.name
@@ -60,6 +63,7 @@ class Element(models.Model):
 class OptionalFunctionModel(models.Model):
     name = models.CharField('Function Name', max_length=200)
     version = models.FloatField('Version', default=0.0)
+    lastVersion = models.BooleanField('Last Version', default=True)
     pinfunction = models.ManyToManyField('PinFunction', blank=True)
     priority = models.IntegerField('Function Priority', default=0)
 
@@ -70,6 +74,7 @@ class OptionalFunctionModel(models.Model):
 class GroupFunctionModel(models.Model):
     name = models.CharField('Function Name', max_length=200)
     version = models.FloatField('Version', default=0.0)
+    lastVersion = models.BooleanField('Last Version', default=True)
     pinfunction = models.ManyToManyField('PinFunction', blank=True)
     priority = models.IntegerField('Function Priority', default=0)
     optionalFunctionModel = models.ForeignKey('OptionalFunctionModel', null=True, default=None, blank=True)
@@ -85,6 +90,7 @@ class GroupFunctionModel(models.Model):
 class GroupFunction(models.Model):
     name = models.CharField('Function Name', max_length=200)
     version = models.FloatField('Version', default=0.0)
+    lastVersion = models.BooleanField('Last Version', default=True)
     groupFunctionModel = models.ForeignKey('GroupFunctionModel', null=True, default=None, blank=True)
     pin = models.ManyToManyField('Pin', blank=True)
     priority = models.IntegerField('Function Priority', default=0)
@@ -101,6 +107,13 @@ class I2cAdress(models.Model):
 class Measure(models.Model):
     name = models.CharField('Measure Name', max_length=200)
     version = models.FloatField('Version', default=0.0)
+    lastVersion = models.BooleanField('Last Version', default=True)
+    unit = models.ManyToManyField('Unit', blank=True)
+
+    @property
+    def parent(self):
+        if self.unit is not None:
+            return self.unit
 
     def __unicode__(self):
         return self.name
@@ -108,6 +121,7 @@ class Measure(models.Model):
 class OptionalFunction(models.Model):
     name = models.CharField('Function Name', max_length=200)
     version = models.FloatField('Version', default=0.0)
+    lastVersion = models.BooleanField('Last Version', default=True)
     optionalPin = models.ForeignKey('PinFunction', max_length=200)
     priority = models.IntegerField('Function Priority', default=0)
 
@@ -182,6 +196,7 @@ class Pin(models.Model):
 class PinFunction(models.Model):
     name = models.CharField('Function Name', max_length=200)
     version = models.FloatField('Version', default=0.0)
+    lastVersion = models.BooleanField('Last Version', default=True)
     detail = models.CharField('detail', null=True, default=None, max_length=200)
     priority = models.IntegerField('Function Priority', default=0)
 
@@ -191,6 +206,7 @@ class PinFunction(models.Model):
 class RaspberryModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
     version = models.FloatField('Version', default=0.0)
+    lastVersion = models.BooleanField('Last Version', default=True)
 
     def __unicode__(self):
         return self.name
@@ -198,6 +214,7 @@ class RaspberryModel(models.Model):
 class SensorModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
     version = models.FloatField('Version', default=0.0)
+    lastVersion = models.BooleanField('Last Version', default=True)
     sketch = models.FileField(upload_to='sketches/', blank=True, null=True)
     i2cAdress = models.ManyToManyField('i2cAdress',  blank=True)
     measure = models.ManyToManyField('Measure',  blank=True)
@@ -209,6 +226,7 @@ class SensorModel(models.Model):
 class SpecialMeasure(models.Model):
     name = models.CharField('Special Measure Name', max_length=200)
     version = models.FloatField('Version', default=0.0)
+    lastVersion = models.BooleanField('Last Version', default=True)
     specialUnity = models.CharField('Special Unity', max_length=200)
 
     def __unicode__(self):
@@ -217,18 +235,13 @@ class SpecialMeasure(models.Model):
 class ShieldModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
     version = models.FloatField('Version', default=0.0)
+    lastVersion = models.BooleanField('Last Version', default=True)
 
     def __unicode__(self):
         return self.name
 
 class Unit(models.Model):
     name = models.CharField('Unit Name', max_length=200)
-    measure = models.ManyToManyField('Measure', blank=True)
-
-    @property
-    def parent(self):
-        if self.measure is not None:
-            return self.measure
 
     def __unicode__(self):
         return self.name
