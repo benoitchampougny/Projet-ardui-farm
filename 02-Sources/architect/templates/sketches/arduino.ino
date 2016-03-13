@@ -1,3 +1,4 @@
+ {% load pin %}
 /*******************************************************************************
 ARDUINO AUTO GENERATED SKETCHES
 *******************************************************************************/
@@ -14,7 +15,7 @@ ARDUINO GENERAL HEADERS
 /*******************************************************************************
 ARDUINO CONNECTED ELEMENT HEADERS
 *******************************************************************************/
-{% for connected_element in element.connected_dio_elements %}
+{% for connected_element, arduino_port, connected_port in element.connected_dio_elements %}
   {% for sketch in connected_element.cardModel.sketches.all %}
   // Sketch: {{sketch.name}}
 {% include sketch.header %}
@@ -36,7 +37,7 @@ void setup()
   /*******************************************************************************
   ARDUINO CONNECTED ELEMENT SETUP
   *******************************************************************************/
-  {% for connected_element in element.connected_dio_elements %}
+  {% for connected_element, arduino_port, connected_port in element.connected_dio_elements %}
     {% for sketch in connected_element.cardModel.sketches.all %}
     // Sketch: {{sketch.name}}
   {% include sketch.setup %}
@@ -59,7 +60,7 @@ void loop()
   /*******************************************************************************
   ARDUINO CONNECTED ELEMENT LOOP
   *******************************************************************************/
-  {% for connected_element in element.connected_dio_elements %}
+  {% for connected_element, arduino_port, connected_port in element.connected_dio_elements %}
     {% for sketch in connected_element.cardModel.sketches.all %}
     // Sketch: {{sketch.name}}
   {% include sketch.loop %}

@@ -70,7 +70,7 @@ class Arduino(models.Model, NetworkComponent):
         for srcPort in self.digitalPorts.all():
             for dstPort in srcPort.connection.all():
                 if dstPort.parent:
-                    yield dstPort.parent
+                    yield dstPort.parent, srcPort, dstPort
 
     def initDigitalPorts(self):
         for pin in self.cardModel.pin_set.filter(functions__name="digital"):
