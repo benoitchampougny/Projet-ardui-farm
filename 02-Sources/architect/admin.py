@@ -18,7 +18,7 @@
 """
 
 from django.contrib import admin
-from architect.models import Location, Network, Library, Message
+from architect.models import Location, Network, Library, Message, Sketch
 # Register your models here.
 
 
@@ -66,6 +66,19 @@ admin.site.register(Library.SpecialMeasure)
 admin.site.register(Library.Measure)
 admin.site.register(Library.OptionalFunction)
 admin.site.register(Library.GroupFunction)
+
+# Library Sketches
+class HeaderInline(admin.StackedInline):
+    model = Sketch.Header
+class SetupInline(admin.StackedInline):
+    model = Sketch.Setup
+class LoopInline(admin.StackedInline):
+    model = Sketch.Loop
+
+class SketchAdmin(admin.ModelAdmin):
+    inlines = (HeaderInline, SetupInline, LoopInline,)
+
+admin.site.register(Sketch.Sketch, SketchAdmin)
 
 
 # Message

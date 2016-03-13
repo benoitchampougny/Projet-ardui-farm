@@ -256,3 +256,15 @@ def add_dio_connection(request, component_type, id):
 
 def remove_dio_connection(request, component_type, component_id, dst_component_type, dst_component_id):
     return HttpResponse()
+
+
+#####################################################################################################
+#                       SKETCH GNEERATION
+#####################################################################################################
+def generate_sketch(request, arduino_id):
+    arduino = get_object_or_404(Arduino, pk=arduino_id)
+    response = render(request,
+                      'sketches/arduino.ino',
+                      {"element": arduino})
+    response['Content-Disposition'] = 'attachment; filename=arduino.ino'
+    return response

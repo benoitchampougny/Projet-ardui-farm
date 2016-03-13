@@ -66,6 +66,12 @@ class Arduino(models.Model, NetworkComponent):
     def downDIO(self):
         return self.digitalPorts.filter(direction="DW")
 
+    def connected_dio_elements(self):
+        for srcPort in self.digitalPorts.all():
+            for dstPort in srcPort.connection.all():
+                if dstPort.parent:
+                    yield dstPort.parent
+
     def initDigitalPorts(self):
         for pin in self.cardModel.pin_set.filter(functions__name="digital"):
             dio = DigitalPort.objects.create(pin=pin)

@@ -23,11 +23,13 @@
 """
 from django.db import models
 from django.db.models import Sum
+from architect.models import Sketch
 
 
 class ArduinoModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
     version = models.CharField('Version', null=True, default=None, max_length=200)
+    sketches = models.ManyToManyField("Sketch")
 
     def __unicode__(self):
         return self.name
@@ -157,6 +159,7 @@ class SensorModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
     version = models.CharField("Version", null=True, default=None, max_length=200)
     publish = models.ManyToManyField('Message', blank=True)
+    sketches = models.ManyToManyField("Sketch")
 
     def __unicode__(self):
         return self.name
@@ -167,6 +170,7 @@ class ActuatorModel(models.Model):
     version = models.CharField("Version", null=True, default=None, max_length=200)
     sketch = models.FileField(upload_to='sketches/', blank=True, null=True)
     suscribe = models.ManyToManyField('Message', blank=True)
+    sketches = models.ManyToManyField("Sketch")
 
     def __unicode__(self):
         return self.name

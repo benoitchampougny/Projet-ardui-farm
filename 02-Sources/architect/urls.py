@@ -62,6 +62,12 @@ urlpatterns = [
         views.remove_dio_connection,
         name='network-remove-dio'),
 
+    # Sketch generation
+    url(r'^network/generate_sketch/(?P<arduino_id>\d+)$',
+        views.generate_sketch,
+        name='network-generate_sketch'),
+
+
     # Create Component
     url(r'^network/create_component$', views.create_component, name='network-create-component'),
 
