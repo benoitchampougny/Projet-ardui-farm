@@ -19,6 +19,6 @@
 
 from architect.models.Library import *
 from scripts.Function import *
-import json
 
-digitalControlerPinRaspberry (forDirectory("raspberry"), RaspberryModel, PinFunction, Pin, "detailOfPin")
+datas =forDirectory("measure")
+listExtract (datas, Measure, Unit, "measure", "measure", "unityOfMeasure")

@@ -19,6 +19,9 @@
 
 from architect.models.Library import *
 from scripts.Function import *
-import json
 
-digitalControlerPinRaspberry (forDirectory("raspberry"), RaspberryModel, PinFunction, Pin, "detailOfPin")
+countAdressI2c = 128
+
+for count in range (countAdressI2c):
+    number=str(count)
+    I2cAdress.objects.create(name=number)

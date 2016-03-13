@@ -19,6 +19,16 @@
 
 from architect.models.Library import *
 from scripts.Function import *
-import json
 
-digitalControlerPinRaspberry (forDirectory("raspberry"), RaspberryModel, PinFunction, Pin, "detailOfPin")
+
+datas=forDirectory("functionality/group of functionality")
+
+groupFunctionality (datas, OptionalFunctionModel, PinFunction, 'optionalFunctionality')
+groupFunctionality (datas, GroupFunctionModel, PinFunction, 'groupedFunctionality')
+
+for data in datas:
+    if data['optionalFunctionality']:
+            groupfunctionmodelobj = GroupFunctionModel.objects.get(name=data['name'])
+            optionalfunctionmodelobj = OptionalFunctionModel.objects.get(name=data['name'])
+            groupfunctionmodelobj.optionalFunctionModel=optionalfunctionmodelobj
+            groupfunctionmodelobj.save()

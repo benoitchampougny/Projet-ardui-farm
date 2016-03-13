@@ -19,6 +19,10 @@
 
 from architect.models.Library import *
 from scripts.Function import *
-import json
 
-digitalControlerPinRaspberry (forDirectory("raspberry"), RaspberryModel, PinFunction, Pin, "detailOfPin")
+datas= forDirectory("sensor")
+
+digitalControlerPinSensor(datas, SensorModel, PinFunction, Pin, "detailOfPin")
+listExtract (datas, SensorModel, I2cAdress, "i2cAdress", "model", "adress I2c")
+listExtract (datas, SensorModel, Measure, "measure", "model", "detailOfMeasure")
+listExtract (datas, SensorModel, Element, "element", "model", "detailOfElement")

@@ -19,6 +19,9 @@
 
 from architect.models.Library import *
 from scripts.Function import *
-import json
 
-digitalControlerPinRaspberry (forDirectory("raspberry"), RaspberryModel, PinFunction, Pin, "detailOfPin")
+datas= forDirectory("element")
+
+for data in datas:
+    for element in data['element']:
+        Element.objects.create(name=element, version=data['version'])

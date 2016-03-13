@@ -1,0 +1,24 @@
+{
+  "version": 1.0,
+
+  "model": "DHT_11",
+
+  "adress I2c": [
+  ],
+
+  "detailOfPin": {
+    "1": ["5v"],
+    "2": ["gnd"],
+    "3": ["digital"]
+  },
+
+  "detailOfMeasure": [
+    "temperature",
+    "humidity"
+  ],
+
+  "detailOfElement": ["air"],
+
+  "detailOfBoolean": {
+  }
+}

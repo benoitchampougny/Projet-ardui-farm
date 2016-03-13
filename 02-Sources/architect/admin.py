@@ -55,10 +55,10 @@ admin.site.register(Library.SpecialMeasure)
 admin.site.register(Library.Measure)
 admin.site.register(Library.OptionalFunction)
 admin.site.register(Library.GroupFunction)
-
-
+admin.site.register(Library.Unit)
+admin.site.register(Library.OptionalFunctionModel)
+admin.site.register(Library.GroupFunctionModel)
 
 # Message
 admin.site.register(Message.Message)
 admin.site.register(Message.BCDData)
-admin.site.register(Message.Units)

@@ -19,9 +19,6 @@
 
 from architect.models.Library import *
 from scripts.Function import *
-
 import json
-with open('../03-Library/arduino/uno.json') as data_file:
-    data = json.load(data_file)
 
-digitalControlerPin (data, ArduinoModel, detailOfPin)
+digitalControlerPinArduino (forDirectory("arduino"), ArduinoModel, PinFunction, Pin, "detailOfPin")

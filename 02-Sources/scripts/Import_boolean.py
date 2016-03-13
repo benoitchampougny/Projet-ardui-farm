@@ -19,6 +19,9 @@
 
 from architect.models.Library import *
 from scripts.Function import *
-import json
 
-digitalControlerPinRaspberry (forDirectory("raspberry"), RaspberryModel, PinFunction, Pin, "detailOfPin")
+datas= forDirectory("boolean")
+createName(datas, Boolean, "name")
+listExtract (datas, Boolean, Element, "element", "name", "element")
+tupleExtract (datas, Boolean, "name", "true", "booleanDescription")
+tupleExtract (datas, Boolean, "name", "false", "booleanDescription")

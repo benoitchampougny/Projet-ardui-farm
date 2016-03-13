@@ -45,7 +45,7 @@
     "37": ["digital"],
     "38": ["digital"],
     "39": ["ground"],
-    "40": ["digital"],
+    "40": ["digital"]
   },
 
   "detailOfGroup": {
@@ -62,12 +62,11 @@
     },
     "3": {
       "serial":"8",
-      "serial":"9",
-
+      "serial":"9"
+    },
     "4": {
       "i2c":"27",
       "i2c":"28"
     }
-
-
+  }
 }
