@@ -21,7 +21,10 @@ from architect.models.Library import *
 from scripts.Function import *
 
 datas= forDirectory("boolean")
-createName(datas, Boolean, "name")
-listExtract (datas, Boolean, Element, "element", "name", "element")
-tupleExtract (datas, Boolean, "name", "true", "booleanDescription")
-tupleExtract (datas, Boolean, "name", "false", "booleanDescription")
+
+for data in datas:
+    if version(data, Element, "element"):
+        listExtract (data, Boolean, Element, "element", "name", "element")
+        tupleExtract (data, Boolean, "name", "true", "booleanDescription")
+        tupleExtract (data, Boolean, "name", "false", "booleanDescription")
+        

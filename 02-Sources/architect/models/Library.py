@@ -34,6 +34,7 @@ class ArduinoModel(models.Model):
 
 class ActuatorModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
+    brand = models.CharField("Brand", max_length=200)
     version = models.FloatField('Version', default=0.0)
     lastVersion = models.BooleanField('Last Version', default=True)
     sketch = models.FileField(upload_to='sketches/', blank=True, null=True)
@@ -87,17 +88,6 @@ class GroupFunctionModel(models.Model):
     def __unicode__(self):
         return self.name
 
-class GroupFunction(models.Model):
-    name = models.CharField('Function Name', max_length=200)
-    version = models.FloatField('Version', default=0.0)
-    lastVersion = models.BooleanField('Last Version', default=True)
-    groupFunctionModel = models.ForeignKey('GroupFunctionModel', null=True, default=None, blank=True)
-    pin = models.ManyToManyField('Pin', blank=True)
-    priority = models.IntegerField('Function Priority', default=0)
-
-    def __unicode__(self):
-        return self.name
-
 class I2cAdress(models.Model):
     name = models.CharField("I2c Adress Name", max_length=200)
 
@@ -130,7 +120,8 @@ class OptionalFunction(models.Model):
 
 class PinGroup(models.Model):
     number = models.CharField(max_length=200)
-    goupfunctions = models.ManyToManyField('GroupFunction')
+    groupFunctionModel = models.ForeignKey('GroupFunctionModel', null=True, default=None, blank=True)
+    pin = models.ManyToManyField('Pin', blank=True)
     actuator = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
     sensor = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
     arduino = models.ForeignKey('ArduinoModel', null=True, default=None, blank=True)
@@ -138,6 +129,7 @@ class PinGroup(models.Model):
 
     class Meta:
         ordering = ['number']
+
 
     @property
     def parent(self):
@@ -151,9 +143,7 @@ class PinGroup(models.Model):
             return self.actuator
 
     def __unicode__(self):
-        name = "%s-%s" % (self.parent.name, self.number)
-        for function in self.groupfunctions.all():
-            name += " [%s]" % function.name
+        name = "[%s] [%s] [%s]" % (self.parent.name, self.number, self.groupFunctionModel.name)
         return name
 
     @property
@@ -218,7 +208,8 @@ class SensorModel(models.Model):
     sketch = models.FileField(upload_to='sketches/', blank=True, null=True)
     i2cAdress = models.ManyToManyField('i2cAdress',  blank=True)
     measure = models.ManyToManyField('Measure',  blank=True)
-    element = models.ManyToManyField('Element',  blank=True)
+    element = models.ForeignKey('Element', null=True, default=None, blank=True)
+    boolean = models.ForeignKey('Boolean', null=True, default=None, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -242,6 +233,7 @@ class ShieldModel(models.Model):
 
 class Unit(models.Model):
     name = models.CharField('Unit Name', max_length=200)
+    shortUnit = models.CharField('Short Unit', max_length=200)
 
     def __unicode__(self):
         return self.name

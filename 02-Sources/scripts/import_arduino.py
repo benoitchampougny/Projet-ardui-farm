@@ -19,6 +19,10 @@
 
 from architect.models.Library import *
 from scripts.Function import *
-import json
 
-digitalControlerPinArduino (forDirectory("arduino"), ArduinoModel, PinFunction, Pin, "detailOfPin")
+datas = forDirectory("arduino")
+
+for data in datas:
+    if version(data, ArduinoModel, "model"):
+        listInTupleExtract (data, ArduinoModel, Pin, PinFunction, "functions", "arduino", "model", "detailOfPin")
+        group(data, GroupFunctionModel, OptionalFunctionModel, ArduinoModel, PinFunction, Pin, PinGroup, "arduino")

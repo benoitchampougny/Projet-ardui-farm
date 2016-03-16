@@ -22,13 +22,15 @@ from scripts.Function import *
 
 
 datas=forDirectory("functionality/group of functionality")
-
-groupFunctionality (datas, OptionalFunctionModel, PinFunction, 'optionalFunctionality')
-groupFunctionality (datas, GroupFunctionModel, PinFunction, 'groupedFunctionality')
+for data in datas:
+    if version(data, OptionalFunctionModel, "name"):
+        listExtract (data, OptionalFunctionModel, PinFunction, 'pinFunction', 'name', 'optionalFunctionality')
 
 for data in datas:
-    if data['optionalFunctionality']:
-            groupfunctionmodelobj = GroupFunctionModel.objects.get(name=data['name'])
-            optionalfunctionmodelobj = OptionalFunctionModel.objects.get(name=data['name'])
-            groupfunctionmodelobj.optionalFunctionModel=optionalfunctionmodelobj
-            groupfunctionmodelobj.save()
+    if version(data, OptionalFunctionModel, "name"):
+        listExtract (data, GroupFunctionModel, PinFunction, 'pinFunction', 'name', 'groupedFunctionality')
+        groupFunctionModelobj = GroupFunctionModel.objects.get(name=data['name'])
+        optionalFunctionModelobj = OptionalFunctionModel.objects.get(name=data['name'])
+        groupFunctionModelobj.optionalFunctionModel = optionalFunctionModelobj
+        groupFunctionModelobj.save()
+        

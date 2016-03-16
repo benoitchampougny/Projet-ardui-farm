@@ -17,8 +17,7 @@
     "humidity"
   ],
 
-  "detailOfElement": ["air"],
+  "detailOfElement": "air",
 
-  "detailOfBoolean": {
-  }
+  "detailOfBoolean":
 }

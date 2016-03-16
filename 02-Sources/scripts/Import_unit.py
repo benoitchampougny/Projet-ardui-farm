@@ -20,10 +20,9 @@
 from architect.models.Library import *
 from scripts.Function import *
 
-datas = forDirectory("functionality")
-
+datas = forDirectory("unit")
 for data in datas:
-    if version(data, PinFunction, "name"):
-        pinFunctionObj = PinFunction.objects.get(name=data['name'])
-        pinFunctionObj.detail = data['detail']
-        pinFunctionObj.save()
+    if version(data, Unit, "longUnit"):
+        unitObj = Unit.objects.get(name=data['longUnit'])
+        unitObj.shortUnit = data['shortUnit']
+        unitObj.save()

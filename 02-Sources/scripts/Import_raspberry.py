@@ -19,6 +19,20 @@
 
 from architect.models.Library import *
 from scripts.Function import *
-import json
 
-digitalControlerPinRaspberry (forDirectory("raspberry"), RaspberryModel, PinFunction, Pin, "detailOfPin")
+datas = forDirectory("raspberry")
+
+for data in datas:
+    if version(data, RaspberryModel, "model"):
+        listInTupleExtract (data, RaspberryModel, Pin, PinFunction, "functions", "raspberry", "model", "detailOfPin")
+        group(data, GroupFunctionModel, OptionalFunctionModel, RaspberryModel, PinFunction, Pin, PinGroup, "raspberry")
+
+
+
+from architect.models.Library import *
+from scripts.Function import *
+
+datas = forDirectory("raspberry")
+
+for data in datas:
+    group(data, GroupFunctionModel, OptionalFunctionModel, RaspberryModel, PinFunction, Pin, PinGroup, "raspberry")

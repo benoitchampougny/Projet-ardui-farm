@@ -22,7 +22,14 @@ from scripts.Function import *
 
 datas= forDirectory("sensor")
 
-digitalControlerPinSensor(datas, SensorModel, PinFunction, Pin, "detailOfPin")
-listExtract (datas, SensorModel, I2cAdress, "i2cAdress", "model", "adress I2c")
-listExtract (datas, SensorModel, Measure, "measure", "model", "detailOfMeasure")
-listExtract (datas, SensorModel, Element, "element", "model", "detailOfElement")
+for data in datas:
+    if version(data, SensorModel, "model"):
+            listInTupleExtract (data, SensorModel, Pin, PinFunction, "functions", "sensor", "model", "detailOfPin")
+            listExtract (data, SensorModel, I2cAdress, "i2cAdress", "model", "adress I2c")
+            listExtract (data, SensorModel, Measure, "measure", "model", "detailOfMeasure")
+            sensorModelObj = SensorModel.objects.get(name=data["model"])
+            elementObj = Element.objects.get(name=data["detailOfElement"])
+            sensorModelObj.element = elementObj
+            booleanObj = Boolean.objects.get(name=data["detailOfBoolean"])
+            sensorModelObj.boolean = booleanObj
+            sensorModelObj.save()

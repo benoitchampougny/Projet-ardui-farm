@@ -19,6 +19,7 @@
 
 import json
 import os
+from datetime import datetime
 
 def forDirectory (dir):
     directory = "../03-Library/" + dir +"/"
@@ -30,21 +31,14 @@ def forDirectory (dir):
                 data.append(json.load(data_file))
     return data
 
-def digitalControlerPinArduino (datas, model, PinFunction, Pin, detailOfPin):
-    for data in datas:
-        arduino = model.objects.create(name=data['model'])
+def listInTupleExtract (data, Model, Pin, PinFunction, key, keyName, name, detailOfPin):
+        modelObj = Model.objects.get(name=data[name])
         for pinNumber, functions in data[detailOfPin].iteritems():
             functionsObj = PinFunction.objects.filter(name__in=functions)
-            pin = Pin.objects.create(number=pinNumber, arduino=arduino)
-            pin.functions.add(*list(functionsObj))
-
-def digitalControlerPinRaspberry (datas, model, PinFunction, Pin, detailOfPin):
-    for data in datas:
-        raspberry = model.objects.create(name=data['model'])
-        for pinNumber, functions in data[detailOfPin].iteritems():
-            functionsObj = PinFunction.objects.filter(name__in=functions)
-            pin = Pin.objects.create(number=pinNumber, raspberry=raspberry)
-            pin.functions.add(*list(functionsObj))
+            pin = Pin.objects.create(number=pinNumber)
+            exec("pin.%s=modelObj" % keyName)
+            exec("pin.%s.add(*list(functionsObj))" % key)
+            pin.save()
 
 def digitalControlerPinSensor (datas, model, PinFunction, Pin, detailOfPin):
     for data in datas:
@@ -60,44 +54,53 @@ def listExtract (data, Measure, Unit, key, nameobj, title):
                 unitobj = Unit.objects.get(name=unit)
                 exec("measure.%s.add(unitobj)" % key)
 
-def groupFunctionality (datas,GroupFunctionModel, PinFunction, title):
-    for data in datas:
-        if data[title]:
-            optionalfunctionmodel = GroupFunctionModel.objects.create(name=data['name'], version=data['version'])
-            for pinfunction in data[title]:
-                    pinfunctionobj =PinFunction.objects.get(name=pinfunction)
-                    optionalfunctionmodel.pinfunction.add(pinfunctionobj)
-
-def grpOptFunctionality(datas, GroupFunctionModel, OptionalFunctionModel):
-    for data in datas:
-        if data['optionalFunctionality']:
-                groupfunctionmodelobj = GroupFunctionModel.objects.get(name=data['name'])
-                optionalfunctionmodelobj = OptionalFunctionModel.objects.get(name=data['name'])
-                groupfunctionmodelobj.optionalFunctionModel=optionalfunctionmodelobj
-                groupfunctionmodelobj.save()
-
 def tupleExtract (data, Model, name, title, titleTuple):
-        modelobj = Model.objects.get(name=data[name])
-        for a, b in data[titleTuple].iteritems():
-            if a == title:
-                exec("modelobj.%s=b" % title)
-                modelobj.save()
+    modelobj = Model.objects.get(name=data[name])
+    for a, b in data[titleTuple].iteritems():
+        if a == title:
+            exec("modelobj.%s=b" % title)
+            modelobj.save()
 
 def version(data, Model, name):
-    modelobj = Model.objects.get(name=data[name])
-    if data['version'] > modelobj.version:
-        rename= modelobj.name + "_" + str(modelobj.version) + "_old_version"
-        modelobj.name = rename
-        modelobj.lastVersion = False
-        modelobj.save()
+    modelobj = Model.objects.filter(name=data[name])
+    number = 0
+    dateNow = datetime.now()
+    if modelobj:
+        modelobj = Model.objects.get(name=data[name])
+        if data['version'] > modelobj.version:
+            versionType = "_old_version_"
+
+        elif data['version'] < modelobj.version:
+            versionType = "_downgrade_version_"
+        if data['version'] != modelobj.version:
+            rename = data[name] + "_" + str(modelobj.version) + versionType + str(dateNow.year) + "-" + str(dateNow.month) + "-" + str(dateNow.day) + "(1)"
+            modelFilter = Model.objects.filter(name=rename)
+            while modelFilter:
+                number = number + 1
+                rename= data[name] + "_" + str(modelobj.version) + versionType + str(dateNow.year) + "-" + str(dateNow.month) + "-" + str(dateNow.day) + "(" + str(number) + ")"
+                modelFilter = Model.objects.filter(name=rename)
+            modelobj.name = rename
+            modelobj.lastVersion = False
+            modelobj.save()
+            Model.objects.create(name=data[name], version=data['version'])
+            return True
+
+    elif not modelobj:
         Model.objects.create(name=data[name], version=data['version'])
         return True
-    if not modelobj:
-        Model.objects.create(name=data[name], version=data['version'])
-        return True
+
     else:
         return False
 
-def createName (datas, Model, name):
-    for data in datas:
-        modelobj = Model.objects.create(name=data[name])
+def group(data, GroupFunctionModel, OptionalFunctionModel, ArduinoModel, PinFunction, Pin, PinGroup, controller):
+    for groupfunction, pinfunction in data['detailOfGroup'].iteritems():
+        number = 0
+        for group in pinfunction:
+            number = number+1
+            for numberPin in group:
+                groupFunctionModelObj = GroupFunctionModel.objects.get(name=groupfunction)
+                controllerModelObj = ArduinoModel.objects.get(name=data['model'])
+                exec("pinObj = Pin.objects.get(number=numberPin, %s=controllerModelObj)" % controller)
+                exec("pinGroupObj, created = PinGroup.objects.get_or_create(number=number, groupFunctionModel=groupFunctionModelObj, %s=controllerModelObj)" % controller)
+                pinGroupObj.pin.add(pinObj)
+                pinGroupObj.save
