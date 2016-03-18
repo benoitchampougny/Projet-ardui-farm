@@ -3,23 +3,18 @@
 
   "model": "relay",
 
-  "adress":[],
+  "adress I2c": [
+  ],
 
-  "detail_of_pin": {
-    "1": "5v",
-    "2": "gnd",
-    "3": "digital",
+  "detailOfPin": {
+    "1": ["5v"],
+    "2": ["gnd"],
+    "3": ["digital"]
   },
 
-  "nameOfPwm": {
-  },
+  "display": "False",
 
-  "nameOfStr": {
-  },
+  "pwm": "False",
 
-  "nameOfBoolean": {
-    "1": "O/I"
-  },
-
-  "detailOfElement": ["air"]
+  "nameOfBoolean":["O/I"]
 }
