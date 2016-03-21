@@ -105,6 +105,7 @@ class I2cAdress(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class InfluenceMeasure(models.Model):
     measure = models.ForeignKey('Measure', null=True, default=None, blank=True)
     actuated = models.ForeignKey('ActuatedModel', null=True, default=None, blank=True)
@@ -271,6 +272,7 @@ class SpecialMeasure(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class ShieldModel(models.Model):
     name = models.CharField("Model Name", max_length=200)
     version = models.FloatField('Version', default=0.0)
@@ -284,6 +286,7 @@ class TechnicalCaracteristic(models.Model):
     measure = models.ForeignKey('Measure', null=True, default=None, blank=True)
     unit = models.ForeignKey('Unit', null=True, default=None, blank=True)
     actuated = models.ForeignKey('ActuatedModel', null=True, default=None, blank=True)
+
 
     class Meta:
         ordering = ['actuated']
@@ -303,6 +306,7 @@ class Update(models.Model):
     name = models.CharField('Name Update', max_length=200)
     version = models.FloatField('Version', default=0.0)
     date = models.DateTimeField (auto_now_add=True)
+
 
     class Meta:
         ordering = ['date']

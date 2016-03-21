@@ -41,14 +41,26 @@ admin.site.register(Network.WifiPort)
 admin.site.register(Network.Actuator)
 
 # Library package
+class PinInline(admin.TabularInline):
+    model = Library.Pin
+
+class ArduinoModelAdmin(admin.ModelAdmin):
+    inlines = (PinInline, )
+
+class SensorModelAdmin(admin.ModelAdmin):
+    inlines = (PinInline, )
+
+class ActuatorModelAdmin(admin.ModelAdmin):
+    inlines = (PinInline, )
+
 admin.site.register(Library.RaspberryModel)
-admin.site.register(Library.ArduinoModel)
-admin.site.register(Library.SensorModel)
-admin.site.register(Library.ActuatorModel)
 admin.site.register(Library.ActuatedModel)
 admin.site.register(Library.Pin)
 admin.site.register(Library.PinShield)
 admin.site.register(Library.PinGroup)
+admin.site.register(Library.ArduinoModel, ArduinoModelAdmin)
+admin.site.register(Library.SensorModel, SensorModelAdmin)
+admin.site.register(Library.ActuatorModel, ActuatorModelAdmin)
 admin.site.register(Library.PinFunction)
 admin.site.register(Library.ShieldModel)
 admin.site.register(Library.I2cAdress)
@@ -63,6 +75,18 @@ admin.site.register(Library.GroupFunctionModel)
 admin.site.register(Library.TechnicalCaracteristic)
 admin.site.register(Library.InfluenceMeasure)
 admin.site.register(Library.Update)
+
 # Message
 admin.site.register(Message.Message)
 admin.site.register(Message.BCDData)
+
+# Message
+class BCDDataInline(admin.TabularInline):
+    model = Message.BCDData
+class BNRDataInline(admin.TabularInline):
+    model = Message.BNRData
+class DiscreteDataInline(admin.TabularInline):
+    model = Message.DiscreteData
+class MessageAdmin(admin.ModelAdmin):
+    inlines = (BCDDataInline, BNRDataInline, DiscreteDataInline)
+admin.site.register(Message.Units)
