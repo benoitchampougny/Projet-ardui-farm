@@ -1,0 +1,18 @@
+{
+  "version": 1.0,
+
+  "brand": "x",
+
+  "model": "y",
+
+  "controller": "arduino",
+
+  "modelController": "Uno",
+
+  "detailOfPinSensor": {
+    "DHT_11": ["2","4"]
+  },
+
+ "detailOfPinActuator": {
+  }
+}

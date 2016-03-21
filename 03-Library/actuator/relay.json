@@ -1,0 +1,16 @@
+{
+  "version": 1.0,
+
+  "model": "relay",
+
+  "brand": "",
+
+  "adress I2c": [
+  ],
+
+  "detailOfPin": {
+    "1": ["5v"],
+    "2": ["gnd"],
+    "3": ["digital"]
+  }
+}
