@@ -20,8 +20,11 @@
 from architect.models.Library import *
 from scripts.Function import *
 
-import json
-with open('../03-Library/raspberry/uno.json') as data_file:
-    data = json.load(data_file)
+datas = forDirectory("raspberry")
 
-digitalControlerPin (data, RaspberryModel, detailOfPin)
+for data in datas:
+    if version(data, RaspberryModel, "model"):
+        listInTupleExtract (data, RaspberryModel, Pin, PinFunction, "functions", "raspberry", "model", "detailOfPin")
+        group(data, GroupFunctionModel, OptionalFunctionModel, RaspberryModel, PinFunction, Pin, PinGroup, "raspberry")
+
+update(Update, "raspberry")

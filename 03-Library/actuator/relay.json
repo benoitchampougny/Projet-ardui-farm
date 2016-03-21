@@ -1,25 +1,16 @@
 {
-  "version": "1.0",
+  "version": 1.0,
 
   "model": "relay",
 
-  "adress":[],
+  "brand": "",
 
-  "detail_of_pin": {
-    "1": "5v",
-    "2": "gnd",
-    "3": "digital",
-  },
+  "adress I2c": [
+  ],
 
-  "nameOfPwm": {
-  },
-
-  "nameOfStr": {
-  },
-
-  "nameOfBoolean": {
-    "1": "O/I"
-  },
-
-  "detailOfElement": ["air"]
+  "detailOfPin": {
+    "1": ["5v"],
+    "2": ["gnd"],
+    "3": ["digital"]
+  }
 }

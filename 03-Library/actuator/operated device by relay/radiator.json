@@ -1,24 +1,19 @@
 {
-  //_MODEL_IDENTIFICATION
-
   "brand": "",
   "model": "radiator",
 
-  //_INFLUENCE_ZONE
-
-  "area": "False",
-  "space": "True",
+  "environment": "True",
   "network": "False",
 
-  //_INFLUENCE_TYPE
+  "detail influence element":[
+    "air"
+  ],
 
-  "detail_of_influence_type": {
-    "temperature": "increases", //increases or decreases
+  "detail influence measure": {
+    "temperature": "up",
   },
 
- //_TECHNICAL_CARACTERISTIC
-
- "technical_caracteristic": { //Respect measure format of a library
+ "technical_caracteristic": {
     "power": [2000,"watt"]
   }
 }

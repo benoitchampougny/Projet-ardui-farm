@@ -54,6 +54,10 @@ class ActuatorModelAdmin(admin.ModelAdmin):
     inlines = (PinInline, )
 
 admin.site.register(Library.RaspberryModel)
+admin.site.register(Library.ActuatedModel)
+admin.site.register(Library.Pin)
+admin.site.register(Library.PinShield)
+admin.site.register(Library.PinGroup)
 admin.site.register(Library.ArduinoModel, ArduinoModelAdmin)
 admin.site.register(Library.SensorModel, SensorModelAdmin)
 admin.site.register(Library.ActuatorModel, ActuatorModelAdmin)
@@ -65,8 +69,16 @@ admin.site.register(Library.Boolean)
 admin.site.register(Library.SpecialMeasure)
 admin.site.register(Library.Measure)
 admin.site.register(Library.OptionalFunction)
-admin.site.register(Library.GroupFunction)
+admin.site.register(Library.Unit)
+admin.site.register(Library.OptionalFunctionModel)
+admin.site.register(Library.GroupFunctionModel)
+admin.site.register(Library.TechnicalCaracteristic)
+admin.site.register(Library.InfluenceMeasure)
+admin.site.register(Library.Update)
 
+# Message
+admin.site.register(Message.Message)
+admin.site.register(Message.BCDData)
 
 # Message
 class BCDDataInline(admin.TabularInline):
@@ -77,5 +89,4 @@ class DiscreteDataInline(admin.TabularInline):
     model = Message.DiscreteData
 class MessageAdmin(admin.ModelAdmin):
     inlines = (BCDDataInline, BNRDataInline, DiscreteDataInline)
-admin.site.register(Message.Message, MessageAdmin)
 admin.site.register(Message.Units)

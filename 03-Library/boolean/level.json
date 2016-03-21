@@ -1,16 +1,15 @@
 {
-  "version": "1.0",
+  "version": 1.0,
 
-  "measure": "level",
+  "name": "level",
 
   "element":[
     "water",
-    "fertilizer",
-    "food"
+    "air"
   ],
 
   "booleanDescription": {
-    "True": "high level",
-    "False": "low level"
+    "true": "high level",
+    "false": "low level"
   }
 }

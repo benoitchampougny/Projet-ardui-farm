@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": 1.0,
 
   "brand": "Raspberry pi",
 
@@ -11,7 +11,7 @@
     "3": ["digital","sda"],
     "4": ["5v"],
     "5": ["digital","scl"],
-    "6": ["ground"],
+    "6": ["gnd"],
     "7": ["digital"],
     "8": ["digital","tx"],
     "9": ["digital","rx"],
@@ -19,13 +19,13 @@
     "11": ["digital"],
     "12": ["digital"],
     "13": ["digital"],
-    "14": ["ground"],
+    "14": ["gnd"],
     "15": ["digital"],
     "16": ["digital"],
     "17": ["3.3v"],
     "18": ["digital","pwm"],
     "19": ["digital","mosi"],
-    "20": ["ground"],
+    "20": ["gnd"],
     "21": ["digital","miso"],
     "22": ["digital"],
     "23": ["digital","sck"],
@@ -35,39 +35,23 @@
     "27": ["sda","idEeprom"],
     "28": ["scl","idEeprom"],
     "29": ["digital"],
-    "30": ["ground"],
+    "30": ["gnd"],
     "31": ["digital"],
     "32": ["digital","pwm"],
     "33": ["digital"],
-    "34": ["ground"],
+    "34": ["gnd"],
     "35": ["digital"],
     "36": ["digital"],
     "37": ["digital"],
     "38": ["digital"],
-    "39": ["ground"],
-    "40": ["digital"],
+    "39": ["gnd"],
+    "40": ["digital"]
   },
 
+
   "detailOfGroup": {
-    "1": {
-      "i2c":"3",
-      "i2c":"5"
-    },
-    "2": {
-      "spi":"19",
-      "spi":"21",
-      "spi":"23",
-      "spi":"24",
-      "spi":"25"
-    },
-    "3": {
-      "serial":"8",
-      "serial":"9",
-
-    "4": {
-      "i2c":"27",
-      "i2c":"28"
-    }
-
-
+    "i2c": [["3","5"],["27","28"]],
+    "spi": [["19","21","23","24","25"]],
+    "serial": [["9","8"]]
+  }
 }

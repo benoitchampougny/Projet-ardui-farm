@@ -1,9 +1,0 @@
-{
-  "version": "1.0",
-
-  "name": "i2c",
-
-  "groupedFunctionality": ["sda","scl"],
-
-  "optionalFunctionality": []
-}
