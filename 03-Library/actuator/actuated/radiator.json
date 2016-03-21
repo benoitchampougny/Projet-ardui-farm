@@ -1,0 +1,19 @@
+{
+  "version": 1.0,
+
+  "brand": "",
+
+  "model": "radiator",
+
+  "flow actuator": "False",
+
+  "detail influence element":"air",
+
+  "detail influence measure": {
+    "temperature": "up"
+  },
+
+ "technicalCaracteristic": {
+    "power": {"2000": "watt"}
+  }
+}

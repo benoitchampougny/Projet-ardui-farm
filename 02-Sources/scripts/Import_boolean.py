@@ -23,8 +23,9 @@ from scripts.Function import *
 datas= forDirectory("boolean")
 
 for data in datas:
-    if version(data, Element, "element"):
-        listExtract (data, Boolean, Element, "element", "name", "element")
+    if version(data, Boolean, "name"):
         tupleExtract (data, Boolean, "name", "true", "booleanDescription")
         tupleExtract (data, Boolean, "name", "false", "booleanDescription")
-        
+        listExtract (data, Boolean, Element, "element", "name", "element")
+
+update(Update, "boolean")

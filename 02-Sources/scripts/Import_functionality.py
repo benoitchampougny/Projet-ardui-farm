@@ -23,7 +23,10 @@ from scripts.Function import *
 datas = forDirectory("functionality")
 
 for data in datas:
-    if version(data, PinFunction, "name"):
-        pinFunctionObj = PinFunction.objects.get(name=data['name'])
-        pinFunctionObj.detail = data['detail']
-        pinFunctionObj.save()
+    pinFunctionObj ,created = PinFunction.objects.get_or_create(name=data['name'])
+    version = str(data['version'])
+    pinFunctionObj.version = version
+    pinFunctionObj.detail = data['detail']
+    pinFunctionObj.save()
+
+update(Update, "functionality")

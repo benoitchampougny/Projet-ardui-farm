@@ -20,11 +20,19 @@
 from architect.models.Library import *
 from scripts.Function import *
 
-datas = forDirectory("arduino")
+
+datas=forDirectory("functionality/group of functionality")
 
 for data in datas:
-    if version(data, ArduinoModel, "model"):
-        listInTupleExtract (data, ArduinoModel, Pin, PinFunction, "functions", "arduino", "model", "detailOfPin")
-        group(data, GroupFunctionModel, OptionalFunctionModel, ArduinoModel, PinFunction, Pin, PinGroup, "arduino")
+    if version(data, OptionalFunctionModel, "name"):
+        listExtract (data, OptionalFunctionModel, PinFunction, 'pinfunction', 'name', 'optionalFunctionality')
 
-update(Update, "arduino")
+for data in datas:
+    if version(data, GroupFunctionModel, "name"):
+        listExtract (data, GroupFunctionModel, PinFunction, 'pinfunction', 'name', 'groupedFunctionality')
+        groupFunctionModelobj = GroupFunctionModel.objects.get(name=data['name'])
+        optionalFunctionModelobj = OptionalFunctionModel.objects.get(name=data['name'])
+        groupFunctionModelobj.optionalFunctionModel = optionalFunctionModelobj
+        groupFunctionModelobj.save()
+
+update(Update, "groupFunction")

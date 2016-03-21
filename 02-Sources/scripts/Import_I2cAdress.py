@@ -24,4 +24,6 @@ countAdressI2c = 128
 
 for count in range (countAdressI2c):
     number=str(count)
-    I2cAdress.objects.create(name=number)
+    I2cAdress.objects.get_or_create(name=number)
+
+update(Update, "I2cAdress")

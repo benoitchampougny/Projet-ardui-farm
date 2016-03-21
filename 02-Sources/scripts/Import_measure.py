@@ -24,3 +24,5 @@ datas = forDirectory("measure")
 for data in datas:
     if version(data, Measure, "measure"):
         listExtract (data, Measure, Unit, "unit", "measure", "unityOfMeasure")
+
+update(Update, "measure")

@@ -4,7 +4,7 @@
   "measure": "temperature",
 
   "unityOfMeasure":[
-    "°C",
-    "°F"
+    "degre celsius",
+    "degre fahrenheit"
   ]
 }

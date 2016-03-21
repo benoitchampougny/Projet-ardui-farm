@@ -22,7 +22,8 @@ from scripts.Function import *
 
 datas = forDirectory("unit")
 for data in datas:
-    if version(data, Unit, "longUnit"):
-        unitObj = Unit.objects.get(name=data['longUnit'])
-        unitObj.shortUnit = data['shortUnit']
-        unitObj.save()
+    unitObj, created = Unit.objects.get_or_create(name=data['longUnit'])
+    unitObj.shortUnit = data['shortUnit']
+    unitObj.save()
+
+update(Update, "unit")

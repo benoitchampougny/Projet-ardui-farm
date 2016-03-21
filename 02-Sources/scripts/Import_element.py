@@ -22,6 +22,10 @@ from scripts.Function import *
 
 datas= forDirectory("element")
 
-datas = forDirectory("unit")
 for data in datas:
-    version(data, Element, "element")
+    elementObj, created = Element.objects.get_or_create(name=data['element'])
+    version = data['version']
+    elementObj.version = version
+    elementObj.save()
+
+update(Update, "element")

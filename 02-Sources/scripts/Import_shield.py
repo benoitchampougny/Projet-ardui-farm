@@ -20,17 +20,10 @@
 from architect.models.Library import *
 from scripts.Function import *
 
-
-datas=forDirectory("functionality/group of functionality")
-for data in datas:
-    if version(data, OptionalFunctionModel, "name"):
-        listExtract (data, OptionalFunctionModel, PinFunction, 'pinFunction', 'name', 'optionalFunctionality')
+datas = forDirectory("shield")
 
 for data in datas:
-    if version(data, OptionalFunctionModel, "name"):
-        listExtract (data, GroupFunctionModel, PinFunction, 'pinFunction', 'name', 'groupedFunctionality')
-        groupFunctionModelobj = GroupFunctionModel.objects.get(name=data['name'])
-        optionalFunctionModelobj = OptionalFunctionModel.objects.get(name=data['name'])
-        groupFunctionModelobj.optionalFunctionModel = optionalFunctionModelobj
-        groupFunctionModelobj.save()
-        
+    if version(data, ShieldModel, "model"):
+        listInTupleExtractShield (data, PinShield, ShieldModel, ArduinoModel, RaspberryModel, SensorModel, "detailOfPinSensor")
+
+update(Update, "shield")

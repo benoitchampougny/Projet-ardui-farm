@@ -5,9 +5,12 @@
 
   "model": "y",
 
+  "controller": "arduino",
+
+  "modelController": "Uno",
+
   "detailOfPinSensor": {
-    "DHT_11": "2",
-    "DHT_22": "4"
+    "DHT_11": ["2","4"]
   },
 
  "detailOfPinActuator": {

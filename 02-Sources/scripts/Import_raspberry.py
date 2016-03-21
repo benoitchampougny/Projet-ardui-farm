@@ -27,12 +27,4 @@ for data in datas:
         listInTupleExtract (data, RaspberryModel, Pin, PinFunction, "functions", "raspberry", "model", "detailOfPin")
         group(data, GroupFunctionModel, OptionalFunctionModel, RaspberryModel, PinFunction, Pin, PinGroup, "raspberry")
 
-
-
-from architect.models.Library import *
-from scripts.Function import *
-
-datas = forDirectory("raspberry")
-
-for data in datas:
-    group(data, GroupFunctionModel, OptionalFunctionModel, RaspberryModel, PinFunction, Pin, PinGroup, "raspberry")
+update(Update, "raspberry")

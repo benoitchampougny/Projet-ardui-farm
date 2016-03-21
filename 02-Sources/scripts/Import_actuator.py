@@ -20,11 +20,14 @@
 from architect.models.Library import *
 from scripts.Function import *
 
-datas = forDirectory("arduino")
+datas= forDirectory("actuator")
 
 for data in datas:
-    if version(data, ArduinoModel, "model"):
-        listInTupleExtract (data, ArduinoModel, Pin, PinFunction, "functions", "arduino", "model", "detailOfPin")
-        group(data, GroupFunctionModel, OptionalFunctionModel, ArduinoModel, PinFunction, Pin, PinGroup, "arduino")
+    if version(data, ActuatorModel, "model"):
+            listInTupleExtract (data, ActuatorModel, Pin, PinFunction, "functions", "actuator", "model", "detailOfPin")
+            listExtract (data, ActuatorModel, I2cAdress, "i2cAdress", "model", "adress I2c")
+            actuatorObj = ActuatorModel.objects.get(name=data["model"])
+            actuatorObj.brand = data["brand"]
+            actuatorObj.save()
 
-update(Update, "arduino")
+update(Update, "actuator")

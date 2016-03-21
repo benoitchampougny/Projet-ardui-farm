@@ -42,6 +42,17 @@ class ActuatorModel(models.Model):
     def __unicode__(self):
         return self.name
 
+class ActuatedModel(models.Model):
+    name = models.CharField("Model Name", max_length=200)
+    brand = models.CharField("Brand", max_length=200)
+    element = models.ForeignKey('Element', null=True, default=None, blank=True)
+    version = models.FloatField('Version', default=0.0)
+    flowActuator = models.BooleanField('Flow Actuator', default=False)
+    lastVersion = models.BooleanField('Last Version', default=True)
+
+    def __unicode__(self):
+        return self.name
+
 class Boolean(models.Model):
     name = models.CharField('Boolean Name', max_length=200)
     version = models.FloatField('Version', default=0.0)
@@ -94,16 +105,20 @@ class I2cAdress(models.Model):
     def __unicode__(self):
         return self.name
 
+class InfluenceMeasure(models.Model):
+    measure = models.ForeignKey('Measure', null=True, default=None, blank=True)
+    actuated = models.ForeignKey('ActuatedModel', null=True, default=None, blank=True)
+    direction = models.CharField('Direction', max_length=200)
+
+    def __unicode__(self):
+        name = "%s - [%s] [%s]" % (self.actuated, self.measure, self.direction)
+        return name
+
 class Measure(models.Model):
     name = models.CharField('Measure Name', max_length=200)
     version = models.FloatField('Version', default=0.0)
     lastVersion = models.BooleanField('Last Version', default=True)
     unit = models.ManyToManyField('Unit', blank=True)
-
-    @property
-    def parent(self):
-        if self.unit is not None:
-            return self.unit
 
     def __unicode__(self):
         return self.name
@@ -117,6 +132,39 @@ class OptionalFunction(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class PinShield(models.Model):
+    number = models.CharField(max_length=200)
+    actuator = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
+    sensor = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
+    arduino = models.ForeignKey('ArduinoModel', null=True, default=None, blank=True)
+    raspberry = models.ForeignKey('RaspberryModel', null=True, default=None, blank=True)
+    shield = models.ForeignKey('ShieldModel', null=True, default=None, blank=True)
+
+    class Meta:
+        ordering = ['number']
+
+    @property
+    def parent(self):
+        if self.raspberry is not None:
+            return self.raspberry
+        if self.arduino is not None:
+            return self.arduino
+
+    @property
+    def children(self):
+        if self.sensor is not None:
+            return self.sensor
+        if self.actuator is not None:
+            return self.actuator
+
+    def __unicode__(self):
+        name = "%s - [%s] [%s] [pin-%s]" % (self.shield, self.parent.name, self.children.name, self.number)
+        return name
+
+    @property
+    def priority(self):
+        return self.functions.all().aggregate(Sum('priority'))
 
 class PinGroup(models.Model):
     number = models.CharField(max_length=200)
@@ -231,9 +279,34 @@ class ShieldModel(models.Model):
     def __unicode__(self):
         return self.name
 
+class TechnicalCaracteristic(models.Model):
+    value =  models.FloatField('Value', default=0.0)
+    measure = models.ForeignKey('Measure', null=True, default=None, blank=True)
+    unit = models.ForeignKey('Unit', null=True, default=None, blank=True)
+    actuated = models.ForeignKey('ActuatedModel', null=True, default=None, blank=True)
+
+    class Meta:
+        ordering = ['actuated']
+
+    def __unicode__(self):
+        name = "%s - [%s: %s %s]" % (self.actuated, self.measure, self.value, self.unit)
+        return name
+
 class Unit(models.Model):
     name = models.CharField('Unit Name', max_length=200)
     shortUnit = models.CharField('Short Unit', max_length=200)
 
     def __unicode__(self):
         return self.name
+
+class Update(models.Model):
+    name = models.CharField('Name Update', max_length=200)
+    version = models.FloatField('Version', default=0.0)
+    date = models.DateTimeField (auto_now_add=True)
+
+    class Meta:
+        ordering = ['date']
+
+    def __unicode__(self):
+        name = "update %s version %d date %s-%s-%s" % (self.name, self.version, self.date.day, self.date.month, self.date.year)
+        return name

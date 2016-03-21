@@ -34,6 +34,7 @@ class Network(models.Model):
 
 class NetworkComponent:
     """ Class to define common methods between components """
+
     def __unicode__(self):
         return self.name
 
@@ -57,7 +58,6 @@ class Arduino(models.Model, NetworkComponent):
     cardModel = models.ForeignKey('ArduinoModel', null=True, default=None, blank=True)
     i2cPorts = models.ManyToManyField("I2cPort", blank=True)
     digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
-
 
     def downI2C(self):
         return self.i2cPorts.filter(direction="DW")

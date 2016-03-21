@@ -30,6 +30,9 @@ for data in datas:
             sensorModelObj = SensorModel.objects.get(name=data["model"])
             elementObj = Element.objects.get(name=data["detailOfElement"])
             sensorModelObj.element = elementObj
-            booleanObj = Boolean.objects.get(name=data["detailOfBoolean"])
-            sensorModelObj.boolean = booleanObj
+            if data["detailOfBoolean"] != "":
+                booleanObj = Boolean.objects.get(name=data["detailOfBoolean"])
+                sensorModelObj.boolean = booleanObj
             sensorModelObj.save()
+
+update(Update, "sensor")

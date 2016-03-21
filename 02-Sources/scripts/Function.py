@@ -40,19 +40,23 @@ def listInTupleExtract (data, Model, Pin, PinFunction, key, keyName, name, detai
             exec("pin.%s.add(*list(functionsObj))" % key)
             pin.save()
 
-def digitalControlerPinSensor (datas, model, PinFunction, Pin, detailOfPin):
-    for data in datas:
-        sensor = model.objects.create(name=data['model'])
-        for pinNumber, functions in data[detailOfPin].iteritems():
-            functionsObj = PinFunction.objects.filter(name__in=functions)
-            pin = Pin.objects.create(number=pinNumber, sensor=sensor)
-            pin.functions.add(*list(functionsObj))
+def listInTupleExtractShield (data, PinShield, ShieldModel, ArduinoModel, RaspberryModel, SensorModel, detailOfPin):
+        shieldModelObj = ShieldModel.objects.get(name=data["model"])
+        for sensor, pins in data[detailOfPin].iteritems():
+            for pin in pins:
+                controllerType = data["controller"]
+                if controllerType == "arduino":
+                    controllerModelOjb = ArduinoModel.objects.get(name=data["modelController"])
+                if controllerType == "raspberry":
+                    controllerModelOjb = RaspberryModel.objects.get(name=data["modelController"])
+                sensorObj = SensorModel.objects.get(name=sensor)
+                exec("PinShield.objects.create(number=pin, %s=controllerModelOjb, sensor=sensorObj, shield=shieldModelObj)" % controllerType)
 
 def listExtract (data, Measure, Unit, key, nameobj, title):
-        measure = Measure.objects.get(name=data[nameobj])
+        measureObj = Measure.objects.get(name=data[nameobj])
         for unit in data[title]:
-                unitobj = Unit.objects.get(name=unit)
-                exec("measure.%s.add(unitobj)" % key)
+                unitObj = Unit.objects.get(name=unit)
+                exec("measureObj.%s.add(unitObj)" % key)
 
 def tupleExtract (data, Model, name, title, titleTuple):
     modelobj = Model.objects.get(name=data[name])
@@ -71,7 +75,7 @@ def version(data, Model, name):
             versionType = "_old_version_"
 
         elif data['version'] < modelobj.version:
-            versionType = "_downgrade_version_"
+            versionType = "_deleted_version_"
         if data['version'] != modelobj.version:
             rename = data[name] + "_" + str(modelobj.version) + versionType + str(dateNow.year) + "-" + str(dateNow.month) + "-" + str(dateNow.day) + "(1)"
             modelFilter = Model.objects.filter(name=rename)
@@ -92,6 +96,19 @@ def version(data, Model, name):
     else:
         return False
 
+def deleteOldVersion(Model, key, *args):
+    modelOldVersion = Model.objects.filter(lastVersion=False)
+    for oldVersion in modelOldVersion:
+        relation = False
+        modelObj = Model.objects.get(name=oldVersion)
+        for modelRelation in args:
+            modelRelationFilter = False
+            exec("modelRelationFilter = modelRelation.objects.filter(%s=modelObj)" % key)
+            if modelRelationFilter:
+                relation = True
+        if not relation:
+            modelObj.delete()
+
 def group(data, GroupFunctionModel, OptionalFunctionModel, ArduinoModel, PinFunction, Pin, PinGroup, controller):
     for groupfunction, pinfunction in data['detailOfGroup'].iteritems():
         number = 0
@@ -104,3 +121,8 @@ def group(data, GroupFunctionModel, OptionalFunctionModel, ArduinoModel, PinFunc
                 exec("pinGroupObj, created = PinGroup.objects.get_or_create(number=number, groupFunctionModel=groupFunctionModelObj, %s=controllerModelObj)" % controller)
                 pinGroupObj.pin.add(pinObj)
                 pinGroupObj.save
+
+def update(Update, importName):
+    with open('../03-Library/update.json') as data_file:
+        data=json.load(data_file)
+    Update.objects.create(name=importName, version=data["version"])
