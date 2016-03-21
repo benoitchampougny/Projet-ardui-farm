@@ -1,7 +1,0 @@
-{
-  "version": 1.0,
-
-  "detail": "id eeprom for HATS (plug-and-play shield)",
-
-  "name": "idEeprom"
-}
