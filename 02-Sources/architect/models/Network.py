@@ -1,11 +1,29 @@
 """
+  Copyright (c) 2016 Benoit CHAMPOUGNY.  All right reserved.
+
+  This file is part of Arduifarm
+
+  Arduifarm is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Arduifarm is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+      along with Arduifarm.  If not, see <http://www.gnu.org/licenses/>. 2
+"""
+"""
     This file will contain models that are related to
     - the network architecture,
     - the interconnection between elements (interfaces)
 """
 from django.db import models
 from architect.models.Library import *
-
+from architect.models.Location import *
 
 class Network(models.Model):
     name = models.CharField("Network Name", max_length=200)
@@ -14,9 +32,9 @@ class Network(models.Model):
     def __unicode__(self):
         return self.name
 
-
 class NetworkComponent:
     """ Class to define common methods between components """
+
     def __unicode__(self):
         return self.name
 
@@ -67,15 +85,25 @@ class Sensor(models.Model, NetworkComponent):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
     digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
+    LocationPorts = models.ManyToManyField("LocationPort", blank=True)
 
     def downDIO(self):
         return self.digitalPorts.filter(direction="DW")
 
+    def downLocation(self):
+        return self.locationPorts.filter(direction="DW")
 
 class Actuator(models.Model, NetworkComponent):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
+    digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
+    LocationPorts = models.ManyToManyField("LocationPort", blank=True)
 
+    def downDIO(self):
+        return self.digitalPorts.filter(direction="DW")
+
+    def downLocation(self):
+        return self.locationPorts.filter(direction="DW")
 
 class GenericPort(models.Model):
     DIRECTIONS = (

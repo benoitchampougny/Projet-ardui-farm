@@ -1,0 +1,61 @@
+{% comment %}
+  Copyright (c) 2016 Benoit CHAMPOUGNY.  All right reserved.
+
+  This file is part of Arduifarm
+
+  Arduifarm is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Arduifarm is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Arduifarm.  If not, see <http://www.gnu.org/licenses/>.
+{% endcomment %}
+
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th width=90%> {{selectTable}}</th>
+        <th width=10%>
+          <button type="button"
+                  class="btn btn-primary btn-xs create-component"
+                  data-target="#location-modal"
+                  data-ajax-url="{%url "location-add-location" element.component_type selectTable element.pk %}">
+            <span class="glyphicon glyphicon-plus">
+            </span>
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for srcPort in element.downLocation %}
+        {% for dstPort in srcPort.connection.all %}
+          {% if dstPort.parent.component_type == selectTable %}
+            {% if dstPort.parent %}
+            {% with dstPort.parent as dst_element %}
+            <tr>
+              <td>
+                <a class="location-refresh-detail"
+                    data-target="#component_detail"
+                    data-ajax-url="{% url "location-component-detail" dstPort.parent.component_type dstPort.parent.pk %}">
+                    {{dstPort.parent.name}}
+                  </a>
+                </td>
+                <td align=right>
+                  <a href="{% url "location-remove-location" element.component_type element.pk dst_element.component_type dst_element.pk %}">
+                   Remove
+                </a>
+              </td>
+            </tr>
+            {% endwith %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </tbody>
+</table>
