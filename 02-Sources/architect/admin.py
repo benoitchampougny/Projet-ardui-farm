@@ -35,10 +35,7 @@ admin.site.register(Network.Network)
 admin.site.register(Network.Arduino)
 admin.site.register(Network.Raspberry)
 admin.site.register(Network.Sensor)
-admin.site.register(Network.I2cPort)
-admin.site.register(Network.DigitalPort)
-admin.site.register(Network.WifiPort)
-admin.site.register(Network.Actuator)
+# admin.site.register(Network.Port)
 
 # Library package
 class PinInline(admin.TabularInline):

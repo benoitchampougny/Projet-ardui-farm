@@ -211,10 +211,10 @@ def remove_i2c_connection(request, component_type, component_id, dst_component_t
 #####################################################################################################
 #                     DIGITAL CONNECTIONS
 #####################################################################################################
-def add_dio_connection(request, component_type, id):
+def add_dio_connection(request, component_id):
     # Get the source element
-    component_model = get_class_by_name(component_type)
-    element = get_object_or_404(component_model, pk=id)
+    netComponent = NetworkComponent.objects.get(pk=component_id)
+    element = netComponent.type
 
     if request.method == 'POST':
         # Retrieve data from user form
@@ -228,25 +228,23 @@ def add_dio_connection(request, component_type, id):
 
         # Get the available pin to connect
         element_pins = element.cardModel.pin_set.filter(functions__name="Digital")
-        available_pins = element_pins.exclude(ports__in=element.digitalPorts.all())
+        available_pins = element_pins.exclude(ports__in=element.port_set.all())
         sorted_available_pins = sorted(available_pins, key=lambda t: t.priority)
 
         # Get needed pin
         remote_component_model = remote_component_model_class.objects.get(pk=remote_component_model_id)
-        nb_of_digital_pin = remote_component_model.pin_set.filter(functions__name="Digital").count()
-
-        # Connect the pin to the new port
-        connected_pins = sorted_available_pins[:nb_of_digital_pin]
-        element_new_port = element.digitalPorts.create()
-        element_new_port.pins.add(*connected_pins)
+        remote_digital_pins = remote_component_model.pin_set.filter(functions__name="Digital")
 
         # Create the remote composant
         remote_component = remote_component_class.objects.create(name=remote_component_name,
                                                                  cardModel=remote_component_model)
 
         # Connect the remote component
-        remote_port = remote_component.digitalPorts.create(direction="UP")
-        element_new_port.connection.add(remote_port)
+        for remote_digital_pin in remote_digital_pins:
+            remote_port = Port.objects.create(component=remote_component, pin=remote_digital_pin)
+            local_port = Port.objects.create(component=element, pin=sorted_available_pins.pop(0))
+            remote_port.connection.add(local_port)
+
         return HttpResponseRedirect(reverse('network-open', args=[element.component_type(), element.pk]))
 
     else:

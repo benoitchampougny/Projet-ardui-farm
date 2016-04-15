@@ -33,127 +33,58 @@ class Network(models.Model):
     def __unicode__(self):
         return self.name
 
-class NetworkComponent:
-    """ Class to define common methods between components """
+
+class NetworkComponent(models.Model):
+    i2cConnection = models.ForeignKey('self', related_name='i2cSubComponent', null=True, default=None, blank=True)
+    wifiConnection = models.ForeignKey('self', related_name='wifiSubComponent', null=True, default=None, blank=True)
+    dioConnection = models.ForeignKey('self', related_name='dioSubComponent', null=True, default=None, blank=True)
+
+    @property
+    def type(self):
+        for typeName in ["raspberry", "arduino", "sensor", "actuator"]:
+            if hasattr(self, typeName):
+                return getattr(self, typeName)
+
+    def __unicode__(self):
+        return self.type.name
+
+
+class Arduino(NetworkComponent):
+    name = models.CharField("Card Name", max_length=200)
+    cardModel = models.ForeignKey('ArduinoModel', null=True, default=None, blank=True)
+
     def __unicode__(self):
         return self.name
 
-    def _get_component_name(self):
-        return self.__class__.__name__
 
-    def tree_element_template(self):
-        component = self._get_component_name()
-        return "network/%s/tree_element.html" % component
-
-    def detail_element_template(self):
-        component = self._get_component_name()
-        return "network/%s/element_details.html" % component
-
-    def component_type(self):
-        return self._get_component_name()
-
-
-class Arduino(models.Model, NetworkComponent):
-    name = models.CharField("Card Name", max_length=200)
-    cardModel = models.ForeignKey('ArduinoModel', null=True, default=None, blank=True)
-    i2cPorts = models.ManyToManyField("I2cPort", blank=True)
-    digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
-
-
-    def downI2C(self):
-        return self.i2cPorts.filter(direction="DW")
-
-    def downDIO(self):
-        return self.digitalPorts.filter(direction="DW")
-
-    def connected_dio_elements(self):
-        for srcPort in self.digitalPorts.all():
-            for dstPort in srcPort.connection.all():
-                if dstPort.parent:
-                    yield dstPort.parent, srcPort, dstPort
-
-    def initDigitalPorts(self):
-        for pin in self.cardModel.pin_set.filter(functions__name="digital"):
-            dio = DigitalPort.objects.create(pin=pin)
-            self.digitalPorts.add(dio)
-
-
-class Raspberry(models.Model, NetworkComponent):
+class Raspberry(NetworkComponent):
     name = models.CharField("Card Name", max_length=200)
     cardModel = models.ForeignKey('RaspberryModel', null=True, default=None, blank=True)
-    i2cPorts = models.ManyToManyField("I2cPort", blank=True)
-    wifiPorts = models.ManyToManyField("WifiPort", blank=True)
-
-    def downI2C(self):
-        return self.i2cPorts.filter(direction="DW")
-
-
-class Sensor(models.Model, NetworkComponent):
-    name = models.CharField("Card Name", max_length=200)
-    cardModel = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
-    digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
-    LocationPorts = models.ManyToManyField("LocationPort", blank=True)
-
-    def downDIO(self):
-        return self.digitalPorts.filter(direction="DW")
-
-    def downLocation(self):
-        return self.locationPorts.filter(direction="DW")
-
-class Actuator(models.Model, NetworkComponent):
-    name = models.CharField("Card Name", max_length=200)
-    cardModel = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
-    digitalPorts = models.ManyToManyField("DigitalPort", blank=True)
-    LocationPorts = models.ManyToManyField("LocationPort", blank=True)
-
-    def downDIO(self):
-        return self.digitalPorts.filter(direction="DW")
-
-    def downLocation(self):
-        return self.locationPorts.filter(direction="DW")
-
-class GenericPort(models.Model):
-    DIRECTIONS = (
-        ("UP", "Upward"),
-        ("DW", "Downward"),
-    )
-    direction = models.CharField(max_length=2, choices=DIRECTIONS, default="DW")
-    address = models.CharField("Address", max_length=200, default=None, blank=True, null=True)
-    connection = models.ManyToManyField("self", blank=True)
-
-    class Meta:
-        # Only use for inheritance.
-        abstract = True
 
     def __unicode__(self):
-        if self.parent is not None:
-            return "%s-%s" % (self.parent.name, self.address)
-        return self.address
+        return self.name
 
-    def _get_parent(self, parentNames):
-        for parentName in parentNames:
-            parentRelation = getattr(self, parentName+"_set")
-            if parentRelation.count() > 0:
-                return parentRelation.first()
+class Sensor(NetworkComponent):
+    name = models.CharField("Card Name", max_length=200)
+    cardModel = models.ForeignKey('SensorModel', null=True, default=None, blank=True)
+    LocationPorts = models.ManyToManyField("LocationPort", blank=True)
 
+    def __unicode__(self):
+        return self.name
 
-class I2cPort(GenericPort):
-    @property
-    def parent(self):
-        return self._get_parent(['arduino', 'raspberry'])
+    def downLocation(self):
+        return self.locationPorts.filter(direction="DW")
 
+class Actuator(NetworkComponent):
+    name = models.CharField("Card Name", max_length=200)
+    cardModel = models.ForeignKey('ActuatorModel', null=True, default=None, blank=True)
+    LocationPorts = models.ManyToManyField("LocationPort", blank=True)
 
-class DigitalPort(GenericPort):
-    pins = models.ManyToManyField('Pin', related_name="ports")
-    @property
-    def parent(self):
-        return self._get_parent(['arduino', 'sensor', 'actuator'])
+    def downLocation(self):
+        return self.locationPorts.filter(direction="DW")
 
 
-class WifiPort(GenericPort):
-    port = models.IntegerField("UDP Port", default=8000, blank=True)
-    password = models.CharField("Password", max_length=200, default=None, blank=True)
-
-    @property
-    def parent(self):
-        return self._get_parent(['arduino', 'raspberry'])
+class Port(models.Model):
+    component = models.ForeignKey('NetworkComponent')
+    pin = models.ForeignKey('Pin', related_name="ports")
+    connection = models.ManyToManyField('Port')
