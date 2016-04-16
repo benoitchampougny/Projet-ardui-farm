@@ -35,15 +35,28 @@ class Network(models.Model):
 
 
 class NetworkComponent(models.Model):
+    
     i2cConnection = models.ForeignKey('self', related_name='i2cSubComponent', null=True, default=None, blank=True)
     wifiConnection = models.ForeignKey('self', related_name='wifiSubComponent', null=True, default=None, blank=True)
     dioConnection = models.ForeignKey('self', related_name='dioSubComponent', null=True, default=None, blank=True)
 
     @property
-    def type(self):
+    def typeName(self):
         for typeName in ["raspberry", "arduino", "sensor", "actuator"]:
             if hasattr(self, typeName):
-                return getattr(self, typeName)
+                return typeName
+
+    @property
+    def type(self):
+        return getattr(self, self.typeName)
+
+    @property
+    def connectedComponents(self):
+        connectedComponents =  NetworkComponent.objects.none()
+        connectedComponents |= self.wifiSubComponent.all()
+        connectedComponents |= self.i2cSubComponent.all()
+        connectedComponents |= self.dioSubComponent.all()
+        return connectedComponents
 
     def __unicode__(self):
         return self.type.name

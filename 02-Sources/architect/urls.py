@@ -26,12 +26,12 @@ urlpatterns = [
     # Home views
     url(r'^$', views.home, name='home'),
     url(r'^network$', views.network, name='network'),
-    url(r'^network/open/(?P<component_type>\w+)/(?P<component_id>\d+)$', views.network, name='network-open'),
+    url(r'^network/open/(?P<component_id>\d+)$', views.network, name='network-open'),
     url(r'^location$', views.location, name='location'),
     url(r'^location/open/(?P<component_type>\w+)/(?P<component_id>\d+)$', views.location, name='location-open'),
 
     # Generic Detail view that will route to the specific one
-    url(r'^network/detail/(?P<component_type>\w+)/(?P<component_id>\d+)$',
+    url(r'^network/detail/(?P<component_id>\d+)$',
         views.component_detail,
         name='network-component-detail'),
     url(r'^location/detail/(?P<component_type>\w+)/(?P<component_id>\d+)$',
@@ -47,18 +47,18 @@ urlpatterns = [
         name='location-add-location'),
 
     # I2C Connection
-    url(r'^network/add_i2c_connection/(?P<component_type>\w+)/(?P<id>\d+)$',
+    url(r'^network/add_i2c_connection/(?P<id>\d+)$',
         views.add_i2c_connection,
         name='network-add-i2c'),
-    url(r'^network/remove_i2c_connection/(?P<component_type>\w+)/(?P<component_id>\d+)/(?P<dst_component_type>\w+)/(?P<dst_component_id>\d+)$',
+    url(r'^network/remove_i2c_connection/(?P<component_id>\d+)/(?P<dst_component_id>\d+)$',
         views.remove_i2c_connection,
         name='network-remove-i2c'),
 
     # I2C Connection
-    url(r'^network/add_dio_connection/(?P<component_type>\w+)/(?P<id>\d+)$',
+    url(r'^network/add_dio_connection/(?P<id>\d+)$',
         views.add_dio_connection,
         name='network-add-dio'),
-    url(r'^network/remove_dio_connection/(?P<component_type>\w+)/(?P<component_id>\d+)/(?P<dst_component_type>\w+)/(?P<dst_component_id>\d+)$',
+    url(r'^network/remove_dio_connection/(?P<component_id>\d+)/(?P<dst_component_id>\d+)$',
         views.remove_dio_connection,
         name='network-remove-dio'),
 

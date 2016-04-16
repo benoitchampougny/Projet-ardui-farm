@@ -32,16 +32,20 @@ def home(request):
 #####################################################################################################
 #                       MAIN VIEW
 #####################################################################################################
-def network(request, component_type=None, component_id=None):
+def network(request, component_id=None):
     network = Network.objects.first()
     if network is not None:
         masterElement = network.master
-        if component_type is None:
+        if component_id is None:
             element = masterElement
         else:
-            component_class = get_class_by_name(component_type)
-            element = get_object_or_404(component_class, pk=component_id)
-        return render(  request, 'network/network.html', {'masterElement': masterElement, "element": element})
+            element = get_object_or_404(NetworkComponent, pk=component_id)
+        detail_element_template = "network/%s/element_details.html" % element.typeName
+        return render(  request,
+                        'network/network.html',
+                        {'masterElement': masterElement.networkcomponent_ptr,
+                         'element': element.networkcomponent_ptr, # alway give the generic object.
+                         'detail_element_template': detail_element_template})
     else:
         return HttpResponse()
 
@@ -58,13 +62,18 @@ def location(request, component_type=None, component_id=None):
         return render(  request, 'location/location.html', {'masterElement': masterElement, "element": element, "selectTable": selectTable})
     else:
         return HttpResponse()
+
+
 #####################################################################################################
 #                       COMPONENT DETAILS
 #####################################################################################################
-def component_detail(request, component_type, component_id):
-    component_class = get_class_by_name(component_type)
-    element = get_object_or_404(component_class, pk=component_id)
-    return render(  request, 'network/component_detail.html', {"element": element})
+def component_detail(request, component_id):
+    element = get_object_or_404(NetworkComponent, pk=component_id)
+    detail_element_template = "network/%s/element_details.html" % element.typeName
+    return render(  request,
+                    'network/component_detail.html',
+                    {"element": element,
+                     "detail_element_template": detail_element_template})
 
 def location_component_detail(request, component_type, component_id):
     component_class = get_class_location_by_name(component_type)
@@ -158,10 +167,9 @@ def remove_location_connection(request, component_type, component_id, dst_compon
 #####################################################################################################
 #                     I2C CONNECTIONS
 #####################################################################################################
-def add_i2c_connection(request, component_type, id):
+def add_i2c_connection(request, id):
     # Get the source element
-    component_model = get_class_by_name(component_type)
-    element = get_object_or_404(component_model, pk=id)
+    element = get_object_or_404(NetworkComponent, pk=component_id)
 
     if request.method == 'POST':
         # Retrieve data from user form
@@ -184,7 +192,7 @@ def add_i2c_connection(request, component_type, id):
 
             # Link target element to the source element
             srcPort.connection.add(dstPort)
-            return HttpResponseRedirect(reverse('network-open', args=[element.component_type(), element.pk]))
+            return HttpResponseRedirect(reverse('network-open', args=[element.pk]))
         else:
             return HttpResponseBadRequest("I2C port already used.")
     else:
@@ -192,21 +200,18 @@ def add_i2c_connection(request, component_type, id):
                         'network/component_detail/add_i2c_connection.html',
                         {"element": element})
 
-def remove_i2c_connection(request, component_type, component_id, dst_component_type, dst_component_id):
+def remove_i2c_connection(request, component_id, dst_component_id):
     # Get the source element
-    component_model = get_class_by_name(component_type)
-    element = get_object_or_404(component_model, pk=component_id)
+    element = get_object_or_404(NetworkComponent, pk=component_id)
 
     # Get the destination element
-    dst_component_model = get_class_by_name(dst_component_type)
-    dst_element = get_object_or_404(dst_component_model, pk=dst_component_id)
+    element = get_object_or_404(NetworkComponent, pk=dst_component_id)
 
     # Remove
     dst_element.i2cPorts.all().delete()
     dst_element.delete()
     return HttpResponseRedirect(reverse('network-open',
-                                        args=[element.component_type(),
-                                              element.pk]))
+                                        args=[element.pk]))
 
 #####################################################################################################
 #                     DIGITAL CONNECTIONS
@@ -245,7 +250,7 @@ def add_dio_connection(request, component_id):
             local_port = Port.objects.create(component=element, pin=sorted_available_pins.pop(0))
             remote_port.connection.add(local_port)
 
-        return HttpResponseRedirect(reverse('network-open', args=[element.component_type(), element.pk]))
+        return HttpResponseRedirect(reverse('network-open', args=[element.pk]))
 
     else:
         return render(request,

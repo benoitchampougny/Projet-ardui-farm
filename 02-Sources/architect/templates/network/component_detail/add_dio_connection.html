@@ -25,7 +25,7 @@
 
 {% block modal-body %}
 <div>
-  <form id="form-add_dio_connection" action="{% url "network-add-dio" element.component_type element.pk%}" method="post">
+  <form id="form-add_dio_connection" action="{% url "network-add-dio" element.pk%}" method="post">
     {% include "network/create_component_form.html"%}
   </form>
 

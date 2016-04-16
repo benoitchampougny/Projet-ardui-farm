@@ -21,9 +21,13 @@
 <li>
   <a class="network-refresh-detail tree_element"
      data-target="#component_detail"
-     data-ajax-url="{% url "network-component-detail" element.component_type element.pk %}">
-      {{element.name}}
+     data-ajax-url="{% url "network-component-detail" element.pk %}">
+      {{element.type.name}}
   </a>
-  {% include element.tree_element_template %}
+  <ul class="">
+    {% for subElement in element.connectedComponents %}
+        {% include "network/component_tree/tree_element.html" with element=subElement %}
+    {% endfor %}
+  </ul>
 </li>
 {% endif %}
